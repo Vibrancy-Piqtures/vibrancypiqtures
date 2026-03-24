@@ -1,0 +1,57 @@
+:root {
+  /* Light theme variables */
+  --scroll-to-top-bg: rgba(221, 221, 221, 0.2); 
+  --scroll-to-top-icon: #114747;
+  --scroll-to-top-hover-bg: rgba(218, 218, 218, 0.35);
+  --scroll-to-top-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+  /* Dark theme variables */
+  --scroll-to-top-bg: rgba(64, 64, 64, 0.6);
+  --scroll-to-top-icon: #ffffff;
+  --scroll-to-top-hover-bg: rgba(90, 90, 90, 0.7); 
+  --scroll-to-top-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 68px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--scroll-to-top-bg);
+  color: var(--scroll-to-top-icon);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.25s ease;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  background-color: var(--scroll-to-top-hover-bg);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top {
+    width: 44px;
+    height: 44px;
+    bottom: 68px;
+    right: 20px;
+  }
+}

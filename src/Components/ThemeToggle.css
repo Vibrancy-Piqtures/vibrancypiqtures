@@ -1,0 +1,143 @@
+.theme-toggle-container {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .theme-checkbox {
+    --toggle-size: 16px;
+    --light-color: #efefef;
+    --dark-color: #2a2a2a;
+    --thumb-light: var(--light-color);
+    --thumb-dark: var(--dark-color);
+    --bg-light: var(--light-color);
+    --bg-dark: var(--dark-color);
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 6.25em;
+    height: 3.125em;
+    background: linear-gradient(to right, var(--bg-light) 50%, var(--bg-dark) 50%) no-repeat;
+    background-size: 205%;
+    background-position: 0;
+    transition: background-position 0.4s;
+    border-radius: 99em;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--toggle-size);
+    border: none;
+    outline: none;
+  }
+  
+  .theme-checkbox::before {
+    content: "";
+    width: 2.25em;
+    height: 2.25em;
+    position: absolute;
+    top: 0.438em;
+    left: 0.438em;
+    background: linear-gradient(to right, var(--thumb-light) 50%, var(--thumb-dark) 50%) no-repeat;
+    background-size: 205%;
+    background-position: 100%;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+  
+  .theme-checkbox:checked::before {
+    left: calc(100% - 2.25em - 0.438em);
+    background-position: 0;
+  }
+  
+  .theme-checkbox:checked {
+    background-position: 100%;
+  }
+  
+  /* Accessibility styles */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Dark mode adjustments */
+  [data-theme="dark"] .theme-checkbox {
+    --light-color: #efefef;
+    --dark-color: #191919;
+    --thumb-light: #f8f9fa;
+    --thumb-dark: #121212;
+  }
+  
+.theme-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.theme-checkbox {
+  --toggle-size: 14px;
+  --light-color: #efefef;
+  --dark-color: #2a2a2a;
+  --thumb-light: var(--light-color);
+  --thumb-dark: var(--dark-color);
+  --bg-light: var(--light-color);
+  --bg-dark: var(--dark-color);
+  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 4.5em;
+  height: 2.25em;
+  background: linear-gradient(to right, var(--bg-light) 50%, var(--bg-dark) 50%) no-repeat;
+  background-size: 205%;
+  background-position: 0;
+  transition: background-position 0.3s ease;
+  border-radius: 99em;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--toggle-size);
+  border: none;
+  outline: none;
+  margin-left: 8px; 
+}
+
+.theme-checkbox::before {
+  content: "";
+  width: 1.75em;
+  height: 1.75em;
+  position: absolute;
+  top: 0.25em;
+  left: 0.25em;
+  background: linear-gradient(to right, var(--thumb-light) 50%, var(--thumb-dark) 50%) no-repeat;
+  background-size: 205%;
+  background-position: 100%;
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+
+.theme-checkbox:checked::before {
+  left: calc(100% - 1.75em - 0.25em);
+  background-position: 0;
+}
+
+.theme-checkbox:checked {
+  background-position: 100%;
+}
+
+.theme-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle; 
+}
+
+.theme-checkbox {
+  margin-top: 0; 
+  vertical-align: middle; 
+}

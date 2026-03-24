@@ -1,0 +1,39 @@
+:root {
+  /* Original Color Palette */
+  --color-primary: #114747;
+  --color-primary-light: #1a6b6b;
+  --color-accent: #61fff2;
+  --color-white: #ffffff;
+  
+  /* Dark Theme Palette */
+  --color-dark-bg: #121212;
+  --color-dark-text: #f0f0f0;
+  --color-dark-accent: #4cc9f0;
+  
+  /* Default Theme(Light) */
+  --color-bg: var(--color-white);
+  --color-text: var(--color-primary);
+  --color-card-bg: var(--color-white);
+  --color-border: #e0e0e0;
+}
+
+[data-theme="dark"] {
+  --color-bg: var(--color-dark-bg);
+  --color-text: var(--color-dark-text);
+  --color-card-bg: #1e1e1e;
+  --color-border: #333;
+  --color-primary: var(--color-dark-accent);
+}
+
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}

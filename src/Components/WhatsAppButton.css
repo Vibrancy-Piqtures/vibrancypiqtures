@@ -1,0 +1,15 @@
+.whatsapp-button {
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    z-index: 100;
+    transition: transform 0.3s ease;
+  }
+  
+  .whatsapp-button:hover {
+    transform: scale(1.1);
+  }
+  
+  [data-theme="dark"] .whatsapp-button img {
+    filter: brightness(0.8);
+  }

@@ -1,0 +1,327 @@
+:root {
+  /* Light theme (default) */
+  --about-bg: #ffffff;
+  --about-text: #114747;
+  --about-secondary-text: #777;
+  --about-border: #f0f0f0;
+  --about-role: #114721;
+  --about-bio: #555;
+  --about-card-bg: #ffffff;
+  --about-card-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  /* Dark theme */
+  --about-bg: #121212;
+  --about-text: #e0e0e0;
+  --about-secondary-text: #aaaaaa;
+  --about-border: #333;
+  --about-role: #218d84;
+  --about-bio: #bbbbbb;
+  --about-card-bg: #1e1e1e;
+  --about-card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.about-wrapper {
+  background-color: var(--about-bg);
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: var(--about-text);
+  transition: color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.about-intro h1 {
+  font-size: 2.5rem;
+  margin: 2rem 0 1rem;
+  text-align: center;
+}
+
+.about-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.about-container h3 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.about-intro {
+  text-align: center;
+  margin: 4rem 0 4rem 0;
+  width: 100%;
+  max-width: 900px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: var(--about-secondary-text);
+  margin-bottom: 2rem;
+}
+
+.about-text {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.about-text p {
+  margin-bottom: 1.5rem;
+}
+
+.team-section {
+  margin: 0;
+  width: 100%;
+}
+
+.team-subtitle {
+  text-align: center;
+  color: var(--about-secondary-text);
+  margin-bottom: 3rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.team-member {
+  text-align: center;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  background-color: var(--about-card-bg);
+  border-radius: 8px;
+  box-shadow: var(--about-card-shadow);
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.member-image-container {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--about-border);
+}
+
+.member-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.team-member:hover .member-image {
+  transform: scale(1.05);
+}
+
+.role {
+  color: var(--about-role);
+  font-weight: 500;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.bio {
+  line-height: 1.6;
+  color: var(--about-bio);
+  font-size: 0.9rem;
+}
+
+.philosophy {
+  margin: 5rem 0;
+  text-align: center;
+  width: 100%;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.philosophy-item {
+  padding: 2rem;
+  border: 1px solid var(--about-border);
+  border-radius: 8px;
+  background-color: var(--about-card-bg);
+  transition: all 0.3s ease;
+}
+
+.philosophy-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--about-card-shadow);
+}
+
+@media (max-width: 768px) {
+  .about-intro h1 {
+    font-size: 2.2rem;
+    margin-top: 1rem;
+  }
+  
+  .team-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+  .member-image-container {
+    width: 140px;
+    height: 140px;
+  }
+
+  .philosophy-item {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-container {
+    padding: 2rem 0.5rem;
+  }
+  
+  .team-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .about-intro h1 {
+    font-size: 2rem;
+  }
+
+  .about-container h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .member-image-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .philosophy-item {
+    padding: 1.25rem;
+  }
+
+  .about-intro h1 {
+    font-size: 1.8rem;
+  }
+}
+
+.faq-section {
+  margin: 5rem 0;
+  padding: 3rem 0;
+  border-top: 1px solid var(--about-border);
+  width: 100%;
+  max-width: 900px;
+}
+
+.faq-subtitle {
+  font-size: 1.1rem;
+  color: var(--about-secondary-text);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.faq-container {
+  margin-top: 2rem;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--about-border);
+  padding: 1.5rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--about-text);
+}
+
+.faq-toggle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-left: 1rem;
+  color: var(--about-secondary-text);
+}
+
+.faq-answer {
+  padding-top: 1rem;
+  color: var(--about-bio);
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease;
+}
+
+.faq-item.active {
+  border-bottom-color: var(--about-role);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    margin: 4rem 0;
+    padding: 2rem 1rem;
+  }
+  
+  .faq-question {
+    font-size: 1rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-section {
+    margin: 3rem 0;
+    padding: 1.5rem 0.5rem;
+  }
+  
+  .faq-item {
+    padding: 1.25rem 0;
+  }
+  
+  .faq-toggle {
+    font-size: 1.3rem;
+  }
+}
