@@ -25,7 +25,7 @@ const VIDEO_DATA = [
   },
   {
     id: 3,
-    title: "Websater & Hamidah's Introduction",
+    title: "Webster & Hamidah's Introduction",
     filename: "wedding3",
     portrait: true,
     duration: "2:38",
