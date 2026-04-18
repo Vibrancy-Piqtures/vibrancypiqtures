@@ -15,5 +15,3 @@ root.render(
     </ThemeProvider>
   </StrictMode>
 );
-
-
