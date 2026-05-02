@@ -88,6 +88,7 @@ function Home() {
                 src={image.src}
                 alt={image.alt}
                 loading="lazy"
+                onLoad={(e) => e.target.classList.add('loaded')}
               />
             </a>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Fancybox from '../Components/FancyBox';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import Reviews from '../Components/Reviews';
@@ -35,6 +35,48 @@ const organizeAlbums = () => {
 
 const weddingAlbums = organizeAlbums();
 
+const LazyImage = ({ src, alt, className }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '50px',
+        threshold: 0.1
+      }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={imgRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {!isLoaded && <div className="image-skeleton" />}
+      {isInView && (
+        <img
+          src={src}
+          alt={alt}
+          className={`${className} ${isLoaded ? 'loaded' : ''}`}
+          onLoad={() => setIsLoaded(true)}
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+};
+
 const Gallery = () => {
   const [activeAlbum, setActiveAlbum] = useState(null);
 
@@ -52,7 +94,7 @@ const Gallery = () => {
                 onClick={() => setActiveAlbum(album)}
               >
                 <div className="cover-container">
-                  <img 
+                  <LazyImage 
                     src={album.cover} 
                     alt={album.title}
                     className="album-cover"
@@ -89,6 +131,7 @@ const Gallery = () => {
                       src={img} 
                       alt={`${activeAlbum.title} ${index + 1}`} 
                       loading="lazy"
+                      onLoad={(e) => e.target.classList.add('loaded')}
                     />
                   </a>
                 ))}
@@ -124,4 +167,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
