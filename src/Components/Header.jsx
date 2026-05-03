@@ -67,6 +67,18 @@ function Header() {
 
   const searchData = buildSearchData();
 
+  const dismissKeyboard = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.blur();
+    }
+  };
+
+  const resetSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowResults(false);
+  };
+
   const toggleMenu = (event) => {
     event.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
@@ -82,9 +94,8 @@ function Header() {
         }
       }, 100);
     } else {
-      setSearchQuery('');
-      setSearchResults([]);
-      setShowResults(false);
+      dismissKeyboard();
+      resetSearch();
     }
   };
 
@@ -106,19 +117,23 @@ function Header() {
   };
 
   const handleSearchSelect = (result) => {
-    setSearchQuery('');
-    setSearchResults([]);
-    setShowResults(false);
+    dismissKeyboard();
+    resetSearch();
     setIsSearchVisible(false);
     setIsMenuOpen(false);
     
-    navigate(result.path);
+    setTimeout(() => {
+      navigate(result.path);
+    }, 100);
   };
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter' && searchResults.length > 0) {
+      e.preventDefault();
+      dismissKeyboard();
       handleSearchSelect(searchResults[0]);
     } else if (e.key === 'Escape') {
+      dismissKeyboard();
       setShowResults(false);
       setSearchQuery('');
       setIsSearchVisible(false);
