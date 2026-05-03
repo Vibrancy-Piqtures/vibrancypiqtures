@@ -36,9 +36,6 @@ const organizeAlbums = () => {
 
 const weddingAlbums = organizeAlbums();
 
-// Log available albums for debugging
-console.log('Available albums:', weddingAlbums.map(a => a.id));
-
 const LazyImage = ({ src, alt, className }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -86,19 +83,13 @@ const Gallery = () => {
   const [activeAlbum, setActiveAlbum] = useState(null);
   const hasCheckedParams = useRef(false);
 
-  // Effect to handle URL parameters
   useEffect(() => {
     const albumParam = searchParams.get('album');
     
     if (albumParam) {
-      console.log('Looking for album:', albumParam);
-      
-      // Find matching album by ID
       const album = weddingAlbums.find(
         album => album.id === albumParam
       );
-      
-      console.log('Found album:', album);
       
       if (album) {
         setActiveAlbum(album);
@@ -205,5 +196,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
-

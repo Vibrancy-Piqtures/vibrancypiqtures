@@ -16,7 +16,6 @@ function Header() {
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
 
-  // Dynamically build search data from gallery images
   const buildSearchData = () => {
     const searchData = [
       { type: 'page', title: 'Home', path: '/', keywords: ['home', 'main'] },
@@ -26,7 +25,6 @@ function Header() {
       { type: 'page', title: 'Contact Us', path: '/ContactUs', keywords: ['contact', 'reach', 'message'] },
     ];
 
-    // We'll build album search data from the image modules directly
     const imageModules = import.meta.glob('../assets/Gallery/Images/**/*.{jpg,JPG,jpeg,JPEG}', { eager: true });
     const albums = {};
     
@@ -55,13 +53,12 @@ function Header() {
       }
     });
 
-    // Add albums to search data
     Object.values(albums).forEach(album => {
       searchData.push({
         type: 'album',
         title: album.title,
         path: `/Gallery?album=${album.id}`,
-        keywords: [...new Set(album.keywords)] // Remove duplicates
+        keywords: [...new Set(album.keywords)]
       });
     });
 
@@ -69,9 +66,6 @@ function Header() {
   };
 
   const searchData = buildSearchData();
-  
-  // Log search data for debugging
-  console.log('Search Data:', searchData);
 
   const toggleMenu = (event) => {
     event.stopPropagation();
@@ -103,7 +97,6 @@ function Header() {
         const searchString = `${item.title} ${item.keywords.join(' ')}`.toLowerCase();
         return searchString.includes(query);
       });
-      console.log('Search results for:', query, filtered);
       setSearchResults(filtered.slice(0, 5));
       setShowResults(true);
     } else {
@@ -113,14 +106,12 @@ function Header() {
   };
 
   const handleSearchSelect = (result) => {
-    console.log('Navigating to:', result.path);
     setSearchQuery('');
     setSearchResults([]);
     setShowResults(false);
     setIsSearchVisible(false);
     setIsMenuOpen(false);
     
-    // Use React Router navigation
     navigate(result.path);
   };
 
@@ -163,7 +154,6 @@ function Header() {
         </a>
       </h1>
       <nav>
-        {/* Desktop Theme Toggle */}
         <div className="desktop-theme-toggle">
           <ThemeToggle />
         </div>
@@ -283,7 +273,6 @@ function Header() {
             </NavLink>
           </li>
           
-          {/* Theme Toggle */}
           <li className="theme-menu-item" onClick={(e) => e.stopPropagation()}>
             <div className="theme-menu-content">
               <span>Theme Settings</span>

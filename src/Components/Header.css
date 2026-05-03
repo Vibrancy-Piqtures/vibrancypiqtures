@@ -122,12 +122,12 @@ nav {
   margin-bottom: 10px;
 }
 
-/* Search Results Dropdown - FIXED */
+/* Search Results Dropdown */
 .search-results-dropdown {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 250px;
   background-color: var(--search-dropdown-bg);
   border: 1px solid var(--search-dropdown-border);
@@ -181,11 +181,11 @@ nav {
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateX(-50%) translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -288,14 +288,25 @@ nav {
   }
 }
 
+/* Responsive Styles */
 @media (max-width: 1024px) {
+  .search-container {
+    position: relative;
+  }
+
   .search-container.active .search-input {
     width: 140px;
   }
 
+  /* Center the dropdown on mobile */
   .search-results-dropdown {
-    width: 220px;
-    left: -80px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 280px;
+    max-width: calc(100vw - 40px);
+    position: fixed;
+    top: 75px;
   }
 
   .menu-toggle {
@@ -394,18 +405,53 @@ nav {
   }
 
   .search-results-dropdown {
-    width: 200px;
-    left: -90px;
+    width: 260px;
+    max-width: calc(100vw - 30px);
+    top: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container.active .search-input {
+    width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .search-results-dropdown {
+    width: 240px;
+    max-width: calc(100vw - 24px);
+    top: 70px;
+  }
+}
+
+@media (max-width: 380px) {
+  .search-container.active .search-input {
+    width: 100px;
+    font-size: 0.8rem;
+  }
+
+  .search-results-dropdown {
+    width: 220px;
+    max-width: calc(100vw - 20px);
+    top: 68px;
   }
 }
 
 @media (max-width: 320px) {
   .search-container.active .search-input {
-    width: 100px;
+    width: 90px;
   }
 
   .search-results-dropdown {
-    width: 180px;
-    left: -80px;
+    width: 200px;
+    max-width: calc(100vw - 16px);
+  }
+
+  .search-result-item {
+    padding: 10px 12px;
+  }
+
+  .search-result-title {
+    font-size: 0.8rem;
   }
 }
