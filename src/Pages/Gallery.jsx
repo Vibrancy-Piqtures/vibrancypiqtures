@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Fancybox from '../Components/FancyBox';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import Reviews from '../Components/Reviews';
@@ -34,6 +35,9 @@ const organizeAlbums = () => {
 };
 
 const weddingAlbums = organizeAlbums();
+
+// Log available albums for debugging
+console.log('Available albums:', weddingAlbums.map(a => a.id));
 
 const LazyImage = ({ src, alt, className }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -78,7 +82,41 @@ const LazyImage = ({ src, alt, className }) => {
 };
 
 const Gallery = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeAlbum, setActiveAlbum] = useState(null);
+  const hasCheckedParams = useRef(false);
+
+  // Effect to handle URL parameters
+  useEffect(() => {
+    const albumParam = searchParams.get('album');
+    
+    if (albumParam) {
+      console.log('Looking for album:', albumParam);
+      
+      // Find matching album by ID
+      const album = weddingAlbums.find(
+        album => album.id === albumParam
+      );
+      
+      console.log('Found album:', album);
+      
+      if (album) {
+        setActiveAlbum(album);
+      }
+    }
+    
+    hasCheckedParams.current = true;
+  }, [searchParams]);
+
+  const handleAlbumClick = (album) => {
+    setActiveAlbum(album);
+    setSearchParams({ album: album.id });
+  };
+
+  const handleBackClick = () => {
+    setActiveAlbum(null);
+    setSearchParams({});
+  };
 
   return (
     <div className="photos-wrapper">
@@ -91,7 +129,7 @@ const Gallery = () => {
               <div 
                 key={album.id}
                 className="album-card"
-                onClick={() => setActiveAlbum(album)}
+                onClick={() => handleAlbumClick(album)}
               >
                 <div className="cover-container">
                   <LazyImage 
@@ -109,11 +147,11 @@ const Gallery = () => {
         ) : (
           <div className="gallery-view">
             <button 
-              onClick={() => setActiveAlbum(null)}
+              onClick={handleBackClick}
               className="back-button"
             >
               <HiOutlineArrowLeft className="back-icon" />
-              <span>Back</span>
+              <span>Back to Galleries</span>
             </button>
 
             <h2 className="gallery-title">{activeAlbum.title}</h2>
@@ -146,11 +184,11 @@ const Gallery = () => {
 
             <div className="back-button-container">
               <button 
-                onClick={() => setActiveAlbum(null)}
+                onClick={handleBackClick}
                 className="back-button"
               >
                 <HiOutlineArrowLeft className="back-icon" />
-                <span>Back</span>
+                <span>Back to Galleries</span>
               </button>
             </div>
           </div>
@@ -167,3 +205,5 @@ const Gallery = () => {
 };
 
 export default Gallery;
+
+

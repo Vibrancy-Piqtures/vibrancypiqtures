@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ThemeToggle from '../Components/ThemeToggle';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import Logo from '../assets/IndexImages/Logo.png';
 
@@ -8,8 +8,70 @@ function Header() {
   const menuListRef = useRef(null);
   const menuToggleRef = useRef(null);
   const searchContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
+
+  // Dynamically build search data from gallery images
+  const buildSearchData = () => {
+    const searchData = [
+      { type: 'page', title: 'Home', path: '/', keywords: ['home', 'main'] },
+      { type: 'page', title: 'Gallery', path: '/Gallery', keywords: ['gallery', 'photos', 'pictures', 'images'] },
+      { type: 'page', title: 'Videos', path: '/Videos', keywords: ['videos', 'films', 'movies'] },
+      { type: 'page', title: 'About Us', path: '/AboutUs', keywords: ['about', 'team', 'info'] },
+      { type: 'page', title: 'Contact Us', path: '/ContactUs', keywords: ['contact', 'reach', 'message'] },
+    ];
+
+    // We'll build album search data from the image modules directly
+    const imageModules = import.meta.glob('../assets/Gallery/Images/**/*.{jpg,JPG,jpeg,JPEG}', { eager: true });
+    const albums = {};
+    
+    Object.keys(imageModules).forEach((path) => {
+      const pathParts = path.split('/');
+      if (pathParts.length >= 4) {
+        const coupleName = pathParts[pathParts.length - 3]; 
+        const eventType = pathParts[pathParts.length - 2]; 
+        const albumName = `${coupleName} - ${eventType}`;
+        const albumId = albumName.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
+        
+        if (!albums[albumId]) {
+          albums[albumId] = {
+            title: albumName,
+            id: albumId,
+            keywords: [
+              coupleName.toLowerCase(),
+              eventType.toLowerCase(),
+              ...coupleName.toLowerCase().split(' '),
+              ...coupleName.toLowerCase().split('&').map(s => s.trim()),
+              eventType.toLowerCase().replace('-', ' '),
+              eventType.toLowerCase().replace('-', '')
+            ]
+          };
+        }
+      }
+    });
+
+    // Add albums to search data
+    Object.values(albums).forEach(album => {
+      searchData.push({
+        type: 'album',
+        title: album.title,
+        path: `/Gallery?album=${album.id}`,
+        keywords: [...new Set(album.keywords)] // Remove duplicates
+      });
+    });
+
+    return searchData;
+  };
+
+  const searchData = buildSearchData();
+  
+  // Log search data for debugging
+  console.log('Search Data:', searchData);
 
   const toggleMenu = (event) => {
     event.stopPropagation();
@@ -21,14 +83,63 @@ function Header() {
     setIsSearchVisible(!isSearchVisible);
     if (!isSearchVisible) {
       setTimeout(() => {
-        searchContainerRef.current.querySelector('input').focus();
-      }, 10);
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        }
+      }, 100);
+    } else {
+      setSearchQuery('');
+      setSearchResults([]);
+      setShowResults(false);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    setSearchQuery(query);
+    
+    if (query.length >= 1) {
+      const filtered = searchData.filter(item => {
+        const searchString = `${item.title} ${item.keywords.join(' ')}`.toLowerCase();
+        return searchString.includes(query);
+      });
+      console.log('Search results for:', query, filtered);
+      setSearchResults(filtered.slice(0, 5));
+      setShowResults(true);
+    } else {
+      setSearchResults([]);
+      setShowResults(false);
+    }
+  };
+
+  const handleSearchSelect = (result) => {
+    console.log('Navigating to:', result.path);
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowResults(false);
+    setIsSearchVisible(false);
+    setIsMenuOpen(false);
+    
+    // Use React Router navigation
+    navigate(result.path);
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Enter' && searchResults.length > 0) {
+      handleSearchSelect(searchResults[0]);
+    } else if (e.key === 'Escape') {
+      setShowResults(false);
+      setSearchQuery('');
+      setIsSearchVisible(false);
     }
   };
 
   const closeMenuOnClickOutside = (event) => {
     if (menuListRef.current && !menuListRef.current.contains(event.target)) {
       setIsMenuOpen(false);
+    }
+    if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+      setShowResults(false);
     }
   };
 
@@ -62,10 +173,29 @@ function Header() {
           ref={searchContainerRef}
         >
           <input 
+            ref={searchInputRef}
             type="text" 
-            placeholder="Search..." 
-            className="search-input" 
+            placeholder="Search albums, clients, events..." 
+            className="search-input"
+            value={searchQuery}
+            onChange={handleSearch}
+            onKeyDown={handleSearchKeyDown}
           />
+          {showResults && searchResults.length > 0 && (
+            <div className="search-results-dropdown">
+              {searchResults.map((result, index) => (
+                <div
+                  key={index}
+                  className="search-result-item"
+                  onClick={() => handleSearchSelect(result)}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  <span className="search-result-type">{result.type}</span>
+                  <span className="search-result-title">{result.title}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <button 
             type="button" 
             className="search-button" 
