@@ -1,0 +1,52 @@
+/* Components/OfflineNotice.css */
+.offline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-bg, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+[data-theme="dark"] .offline-overlay {
+  background-color: var(--color-dark-bg, #121212);
+}
+
+.offline-content {
+  text-align: center;
+  padding: 2rem;
+  max-width: 400px;
+}
+
+.offline-icon {
+  color: var(--color-primary, #114747);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.offline-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--color-text, #333);
+}
+
+.offline-content p {
+  color: var(--color-text, #666);
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.offline-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

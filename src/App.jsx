@@ -1,9 +1,12 @@
+// App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import WhatsAppButton from './Components/WhatsAppButton';
 import ScrollToTopButton from './Components/ScrollToTopButton';
+import OfflineNotice from './Components/OfflineNotice';
+import useOnlineStatus from './hooks/useOnlineStatus';
 import Home from './Pages/Home';
 import Gallery from './Pages/Gallery';
 import Videos from './Pages/Videos';
@@ -19,6 +22,12 @@ function ScrollToTop() {
 }
 
 function App() {
+  const isOnline = useOnlineStatus();
+
+  if (!isOnline) {
+    return <OfflineNotice />;
+  }
+
   return (
     <Router>
       <ScrollToTop />
@@ -38,4 +47,3 @@ function App() {
 }
 
 export default App;
-
