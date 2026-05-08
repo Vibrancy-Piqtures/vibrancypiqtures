@@ -29,10 +29,9 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: <FaFacebookF />, label: 'Facebook', url: 'https://facebook.com/', className: 'facebook' },
-    { icon: <FaXTwitter />, label: 'X', url: 'https://x.com/', className: 'x' },
-    { icon: <FaInstagram />, label: 'Instagram', url: 'https://instagram.com/', className: 'instagram' },
-    { icon: <FaYoutube />, label: 'YouTube', url: 'https://youtube.com/', className: 'youtube' }
+    { icon: <FaFacebookF />, label: 'Facebook', url: 'https://www.facebook.com/share/1MJW5NJJFg/', className: 'facebook' },
+    { icon: <FaInstagram />, label: 'Instagram', url: 'https://www.instagram.com/vibrancy_piqtures', className: 'instagram' },
+    { icon: <FaYoutube />, label: 'YouTube', url: 'https://www.youtube.com/@VIBRANCYPIQTURES', className: 'youtube' }
   ];
 
   const currentYear = new Date().getFullYear();
