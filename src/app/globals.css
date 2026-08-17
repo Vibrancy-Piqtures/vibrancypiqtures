@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+.theme-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.theme-checkbox {
+  --toggle-size: 14px;
+  --light-color: #efefef;
+  --dark-color: #2a2a2a;
+  --thumb-light: var(--light-color);
+  --thumb-dark: var(--dark-color);
+  --bg-light: var(--light-color);
+  --bg-dark: var(--dark-color);
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 4.5em;
+  height: 2.25em;
+  background: linear-gradient(to right, var(--bg-light) 50%, var(--bg-dark) 50%) no-repeat;
+  background-size: 205%;
+  background-position: 0;
+  transition: background-position 0.3s ease;
+  border-radius: 99em;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--toggle-size);
+  border: none;
+  outline: none;
+  margin-left: 8px;
+  margin-top: 0;
+  vertical-align: middle;
+}
+
+.theme-checkbox::before {
+  content: "";
+  width: 1.75em;
+  height: 1.75em;
+  position: absolute;
+  top: 0.25em;
+  left: 0.25em;
+  background: linear-gradient(to right, var(--thumb-light) 50%, var(--thumb-dark) 50%) no-repeat;
+  background-size: 205%;
+  background-position: 100%;
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+
+.theme-checkbox:checked::before {
+  left: calc(100% - 1.75em - 0.25em);
+  background-position: 0;
+}
+
+.theme-checkbox:checked {
+  background-position: 100%;
+}
+
+.theme-checkbox.no-transition {
+  transition: none;
+}
+.theme-checkbox.no-transition::before {
+  transition: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-theme="dark"] .theme-checkbox {
+  --light-color: #efefef;
+  --dark-color: #191919;
+  --thumb-light: #f8f9fa;
+  --thumb-dark: #121212;
+}
+
+@theme {
+  /* Base */
+  --color-bg-primary: #f9f9f9;
+  --color-bg-dark: #121212;
+  --color-primary: #114747;
+  --color-text-light: #114747;
+  --color-text-dark: #e0e0e0;
+
+  /* Header */
+  --color-header-bg: #fdfdfd;
+  --color-header-text: #114747;
+  --color-header-hover: rgba(17, 71, 62, 0.08);
+
+  --color-search-bg: #f1f1f1;
+  --color-search-icon: #114747;
+  --color-search-icon-hover: #f1f1f1;
+
+  --color-menu-icon: #094c4e;
+
+  --color-search-dropdown-bg: #ffffff;
+  --color-search-dropdown-hover: #f5f5f5;
+  --color-search-dropdown-border: #e0e0e0;
+
+  --color-mobile-menu-bg: rgba(253, 253, 253, 0.85);
+
+  /* Footer */
+  --color-footer-bg: #fdfdfd;
+  --color-footer-text: #114747;
+  --color-footer-heading: #094c4e;
+  --color-footer-secondary: #5a7a7a;
+  --color-footer-border: #e0e0e0;
+  --color-footer-accent: #114747;
+  --color-footer-accent-hover: #0a3535;
+  --color-cta-bg: #114747;
+  --color-cta-text: #ffffff;
+
+  /* Hero - LIGHT MODE */
+  --color-hero-bg: #fafafa;
+  --color-hero-overlay-start: rgba(255, 255, 255, 0.3);
+  --color-hero-overlay-mid: rgba(255, 255, 255, 0.2);
+  --color-hero-overlay-vertical-start: rgba(255, 255, 255, 0.0);
+  --color-hero-overlay-vertical-end: rgba(255, 255, 255, 0.0);
+
+  --color-hero-text: #0a3535;
+  --color-hero-subtext: #18181b;
+  --color-hero-muted: #3f3f46;
+  --color-hero-chip-bg: rgba(0, 0, 0, 0.1);
+  --color-hero-chip-border: rgba(0, 0, 0, 0.1);
+  --color-hero-chip-text: #3f3f46;
+
+  --color-hero-button-bg: #000000;
+  --color-hero-button-text: #ffffff;
+  --color-hero-button-hover: #27272a;
+
+  --color-hero-thumb-ring: #0a3535;
+  --color-hero-thumb-text: #0a3535;
+  --color-hero-thumb-muted: #18181b;
+  --color-hero-thumb-overlay-start: rgba(255, 255, 255, 0.2);
+  --color-hero-thumb-overlay-mid: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] {
+  /* Base */
+  --color-bg-primary: #121212;
+  --color-primary: #114747;
+  --color-text-light: #e0e0e0;
+
+  /* Header */
+  --color-header-bg: #1a1a1a;
+  --color-header-text: #e0e0e0;
+  --color-header-hover: rgba(36, 36, 36, 0.08);
+
+  --color-search-bg: #1f1f1f;
+  --color-search-icon: #e0e0e0;
+  --color-search-icon-hover: #1f1f1f;
+
+  --color-menu-icon: #fdfdfd;
+
+  --color-search-dropdown-bg: #2d2d2d;
+  --color-search-dropdown-hover: #3a3a3a;
+  --color-search-dropdown-border: #444444;
+
+  --color-mobile-menu-bg: rgba(42, 42, 42, 0.85);
+
+  /* Footer */
+  --color-footer-bg: #1a1a1a;
+  --color-footer-text: #e0e0e0;
+  --color-footer-heading: #cccccc;
+  --color-footer-secondary: #999999;
+  --color-footer-border: #333333;
+  --color-footer-accent: #114747;
+  --color-footer-accent-hover: #0a3535;
+  --color-cta-bg: #114747;
+  --color-cta-text: #ffffff;
+
+  /* Hero - DARK MODE */
+  --color-hero-bg: #09090b;
+  --color-hero-overlay-start: rgba(0, 0, 0, 0.8);
+  --color-hero-overlay-mid: rgba(0, 0, 0, 0.4);
+  --color-hero-overlay-vertical-start: rgba(0, 0, 0, 0.9);
+  --color-hero-overlay-vertical-end: rgba(0, 0, 0, 0.3);
+
+  --color-hero-text: #ffffff;
+  --color-hero-subtext: #d4d4d8;
+  --color-hero-muted: #a1a1aa;
+  --color-hero-chip-bg: rgba(255, 255, 255, 0.1);
+  --color-hero-chip-border: rgba(255, 255, 255, 0.1);
+  --color-hero-chip-text: #a1a1aa;
+
+  --color-hero-button-bg: #ffffff;
+  --color-hero-button-text: #000000;
+  --color-hero-button-hover: #e4e4e7;
+
+  --color-hero-thumb-ring: #ffffff;
+  --color-hero-thumb-text: #ffffff;
+  --color-hero-thumb-muted: #d4d4d8;
+  --color-hero-thumb-overlay-start: rgba(0, 0, 0, 0.8);
+  --color-hero-thumb-overlay-mid: rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+[data-theme="dark"] body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-light);
+}
+
+/* Keyframe animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+.animate-slideDown {
+  animation: slideDown 0.2s ease;
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.font-spiky {
+  font-family: var(--font-bungee);
+}
