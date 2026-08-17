@@ -4,28 +4,34 @@ import { useState } from 'react';
 
 const teamMembers = [
   {
-    name: 'Mark Paul Mugerwa',
+    name: 'Marq',
     role: 'Photographer, Editor, Creative Director & Co-Founder',
     bio: 'Specializes in capturing candid moments and telling your unique love story.',
     image: 'assets/Feature/Team/Mark.jpg',
   },
   {
-    name: 'Swade James',
+    name: 'Swade Jaymes',
     role: 'Photographer, Editor, Client Management & Co-Founder',
     bio: 'In charge of making sure you receive your images on time and are satisfied with our service delivery.',
     image: 'assets/Feature/Team/Jaymes.jpg',
   },
   {
+    name: 'Monalisa',
+    role: 'Editor & Client Management',
+    bio: 'Helps manage client relationships and ensures the final edited images meet your expectations.',
+    image: 'assets/Feature/Team/Monalisa.jpg',
+  },
+  {
     name: 'Jordan',
     role: 'Grip & Lighting Specialist',
     bio: 'Makes sure the images are well lit and look vibrant.',
-    image: '/Team/Jordan.jpg',
+    image: 'assets/Feature/Team/Jordan.jpg',
   },
   {
-    name: 'Asher',
+    name: 'Ashraf',
     role: 'Videographer & Editor',
     bio: 'Makes the detail video that will allow you relive your special day.',
-    image: '/Team/Asher.jpg',
+    image: 'assets/Feature/Team/Ashraf.jpg',
   },
 ];
 
@@ -77,7 +83,7 @@ export default function AboutPage() {
                 key={index}
                 className="flex flex-col items-center text-center p-8 bg-(--color-header-bg) border border-(--color-search-dropdown-border) rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
               >
-                <div className="w-36 h-36 mb-6 rounded-full overflow-hidden border-4 border-bg-primary shadow-md group-hover:border-(--color-primary) transition-colors duration-300">
+                <div className="w-36 h-36 mb-6 rounded-full overflow-hidden border-4 border-bg-primary shadow-md transition-colors duration-300">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -87,7 +93,7 @@ export default function AboutPage() {
                 <h3 className="text-xl font-bold text-(--color-text-light) transition-colors duration-300">
                   {member.name}
                 </h3>
-                <p className="text-sm font-semibold text-(--color-primary) mt-2 uppercase tracking-wide">
+                <p className="text-sm font-semibold text-footer-secondary mt-2 uppercase tracking-wide">
                   {member.role}
                 </p>
                 <p className="text-sm text-footer-secondary mt-4 leading-relaxed grow">
