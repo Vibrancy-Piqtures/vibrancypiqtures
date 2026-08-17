@@ -7,9 +7,19 @@ const OfflineNotice = () => {
       role="alert"
       style={{ backgroundColor: 'var(--color-bg, #ffffff)' }}
     >
-      <div className="text-center p-8 max-w-100">
-        <div className="text-(--color-primary,#114747) opacity-80 mb-6">
+      <div className="flex flex-col items-center text-center p-8 max-w-100">
+        
+        {/* Brand Logo */}
+        <img 
+          src="/assets/Logo/Logo.svg" 
+          alt="Brand Logo" 
+          className="w-32 h-auto mb-8" 
+        />
+
+        {/* Offline Icon Wrapper */}
+        <div className="flex justify-center text-(--color-primary,#114747) opacity-80 mb-6">
           <svg
+            className="block mx-auto"
             width="64"
             height="64"
             viewBox="0 0 24 24"
@@ -26,6 +36,7 @@ const OfflineNotice = () => {
             <line x1="12" y1="20" x2="12.01" y2="20" />
           </svg>
         </div>
+
         <h2 className="text-[1.8rem] mb-4 text-(--color-text,#333)">
           You're Offline
         </h2>
