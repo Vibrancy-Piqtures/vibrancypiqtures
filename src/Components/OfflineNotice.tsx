@@ -8,15 +8,7 @@ const OfflineNotice = () => {
       style={{ backgroundColor: 'var(--color-bg, #ffffff)' }}
     >
       <div className="flex flex-col items-center text-center p-8 max-w-100">
-        
-        {/* Brand Logo */}
-        <img 
-          src="/assets/Logo/Logo.svg" 
-          alt="Brand Logo" 
-          className="w-32 h-auto mb-8" 
-        />
-
-        {/* Offline Icon Wrapper */}
+        {/* Offline Icon */}
         <div className="flex justify-center text-(--color-primary,#114747) opacity-80 mb-6">
           <svg
             className="block mx-auto"
