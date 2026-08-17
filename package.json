@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "prebuild": "node scripts/generate-album-index.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
