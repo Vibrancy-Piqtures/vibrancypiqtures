@@ -98,6 +98,7 @@ const extraServices = [
   { label: "Love Story (Shot from Our Office)", price: "Free Of Charge" },
   { label: "Extra Photographer", price: "+ USH 600,000" },
   { label: "Same Day Edit", price: "+ USH 600,000" },
+  { label: "360 camera", price: "+ USH 800,000" }
 ];
 
 export default function PackagesPage() {
