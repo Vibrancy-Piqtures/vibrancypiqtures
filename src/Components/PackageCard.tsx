@@ -22,7 +22,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
   const formattedPrice = new Intl.NumberFormat("en-US").format(pkg.price);
 
   return (
-    <div className="group bg-(--color-footer-bg) dark:bg-(--color-footer-bg-dark) dark:border-(--color-footer-border-dark) rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row w-full min-h-80">
+    <div className="group bg-(--color-footer-bg) dark:bg-(--color-footer-bg-dark) dark:border-(--color-footer-border-dark) rounded-sm overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row w-full min-h-80">
       {/* Image Container */}
       <div className="relative w-full h-64 md:h-auto md:w-2/5 min-h-60 overflow-hidden shrink-0">
         <FadeInImage
@@ -34,11 +34,11 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           priority={false}
         />
         {pkg.popular && (
-          <span className="absolute top-4 left-4 bg-(--color-footer-accent) text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+          <span className="absolute top-4 left-4 bg-(--color-footer-accent) text-white text-xs font-bold px-3 py-1 rounded-sm z-10 shadow-sm">
             Most Popular
           </span>
         )}
-        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold z-10 shadow-sm">
+        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md text-white px-4 py-1.5 rounded-sm text-xs md:text-sm font-semibold z-10 shadow-sm">
           From USH {formattedPrice}
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           packageName={pkg.name}
           packagePrice={pkg.price}
           variant="primary"
-          className="w-full sm:w-auto sm:px-8 self-start text-white tracking-wide font-semibold text-sm md:text-base shadow-sm"
+          className="w-full sm:w-auto sm:px-8 self-start text-white tracking-wide font-semibold text-sm md:text-base shadow-sm rounded-sm"
         />
       </div>
     </div>

@@ -32,7 +32,7 @@ const videoData = [
   },
 ];
 
-const VideoCard = ({ video }: { video: typeof videoData[0] }) => {
+const VideoCard = ({ video, index = 0 }: { video: typeof videoData[0]; index?: number }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,10 @@ const VideoCard = ({ video }: { video: typeof videoData[0] }) => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#1e1e1e] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 w-full max-w-100">
+    <div 
+      className="bg-white dark:bg-[#1e1e1e] rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 w-full max-w-100 animate-fade-in-up"
+      style={{ animationDelay: `${(index + 1) * 0.1}s` }}
+    >
       <div className="relative aspect-video bg-black">
         {hasMounted ? (
           <ReactPlayer
@@ -50,7 +53,7 @@ const VideoCard = ({ video }: { video: typeof videoData[0] }) => {
             height="100%"
             controls
             playIcon={
-              <div className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center text-black hover:bg-white/90 transition-all">
+              <div className="w-16 h-16 bg-white/70 rounded-md flex items-center justify-center text-black hover:bg-white/90 transition-all shadow-md">
                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">
                   <path d="M8 5v14l11-7z" />
                 </svg>
@@ -73,7 +76,7 @@ const VideoCard = ({ video }: { video: typeof videoData[0] }) => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <div className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center text-black">
+              <div className="w-16 h-16 bg-white/70 rounded-md flex items-center justify-center text-black shadow-md">
                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">
                   <path d="M8 5v14l11-7z" />
                 </svg>
@@ -101,25 +104,31 @@ export default function VideosPage() {
   return (
     <main className="bg-(--color-bg) text-(--color-text) transition-colors duration-300 min-h-screen px-6 pt-28 pb-10 md:px-10 lg:pt-32 lg:pb-16">
       <div className="max-w-300 mx-auto">
-        <div className="bg-white dark:bg-[#1e1e1e] rounded-xl p-6 md:p-10 text-center max-w-225 mx-auto mb-12">
+        
+        {/* Header Section */}
+        <div className="bg-white dark:bg-[#1e1e1e] rounded-md p-6 md:p-10 text-center max-w-225 mx-auto mb-12 shadow-sm animate-fade-in-up">
           <h2 className="text-2xl md:text-4xl font-semibold text-(--color-text) transition-colors duration-300">
             Our Events Videos
           </h2>
+          <div className="h-1 w-20 bg-(--color-primary) mx-auto mt-4 rounded-sm"></div>
         </div>
 
+        {/* Video Grid Section */}
         {availableVideos.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-            {availableVideos.map((video) => (
-              <VideoCard key={video.id} video={video} />
+            {availableVideos.map((video, index) => (
+              <VideoCard key={video.id} video={video} index={index} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 text-(--color-text-light)">
+          <div className="text-center py-16 text-(--color-text-light) animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             <p>No videos available at the moment.</p>
             <p>Please check your video file paths and try again.</p>
           </div>
         )}
+        
       </div>
     </main>
   );
 }
+

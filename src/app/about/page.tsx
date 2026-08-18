@@ -74,16 +74,16 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-(--color-text-light) transition-colors duration-300">
               Meet Our Team
             </h2>
-            <div className="h-1 w-20 bg-(--color-primary) mx-auto mt-4 rounded-full"></div>
+            <div className="h-1 w-20 bg-(--color-primary) mx-auto mt-4 rounded-sm"></div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+          <div className="flex flex-wrap justify-center gap-8 px-4 max-w-6xl mx-auto">
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center text-center p-8 bg-(--color-header-bg) border border-(--color-search-dropdown-border) rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
+                className="flex flex-col items-center text-center p-8 bg-(--color-header-bg) border border-(--color-search-dropdown-border) rounded-md shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group w-full sm:w-[calc(50%-2rem)] lg:w-80"
               >
-                <div className="w-36 h-36 mb-6 rounded-full overflow-hidden border-4 border-bg-primary shadow-md transition-colors duration-300">
+                <div className="w-36 h-36 mb-6 rounded-md overflow-hidden border-4 border-bg-primary shadow-md transition-colors duration-300 shrink-0">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -110,7 +110,7 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-(--color-text-light) transition-colors duration-300">
               Frequently Asked Questions
             </h2>
-            <div className="h-1 w-20 bg-(--color-primary) mx-auto mt-4 rounded-full"></div>
+            <div className="h-1 w-20 bg-(--color-primary) mx-auto mt-4 rounded-sm"></div>
           </div>
           
           <div className="space-y-4">
@@ -119,7 +119,7 @@ export default function AboutPage() {
               return (
                 <div
                   key={faq.id}
-                  className={`border border-(--color-search-dropdown-border) rounded-lg overflow-hidden transition-all duration-300 ${
+                  className={`border border-(--color-search-dropdown-border) rounded-md overflow-hidden transition-all duration-300 ${
                     isActive ? 'bg-(--color-header-bg) shadow-md' : 'bg-transparent'
                   }`}
                 >
@@ -132,7 +132,7 @@ export default function AboutPage() {
                     }`}>
                       {faq.question}
                     </span>
-                    <span className="shrink-0 ml-4 flex items-center justify-center w-8 h-8 rounded-full bg-(--color-search-bg) text-(--color-primary) transition-transform duration-300">
+                    <span className="shrink-0 ml-4 flex items-center justify-center w-8 h-8 rounded-md bg-(--color-search-bg) text-(--color-primary) transition-transform duration-300">
                       {isActive ? (
                         <svg className="w-4 h-4 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />

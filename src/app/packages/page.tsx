@@ -1,8 +1,47 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from "react";
 import PackageCard from "@/Components/PackageCard";
 import { getAllPackages } from "@/lib/data/packages";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import CategoryScrollButtons from "@/Components/CategoryScrollButtons";
+
+// --- Intersection Observer Component for smooth, non-glitchy scroll animations ---
+const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${className} ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const categoryDetails: Record<string, { label: string; intro: string }> = {
   proposal: {
@@ -41,7 +80,7 @@ const categoryDetails: Record<string, { label: string; intro: string }> = {
 
 const categoryOrder = [
   "proposal",
-  "kukyaala",
+  "kukyala",
   "kuhingira",
   "wedding",
   "portrait-indoor",
@@ -76,15 +115,19 @@ export default function PackagesPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 md:pb-20">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-(--color-footer-heading)">
+      
+      {/* Header Section */}
+      <FadeIn className="text-center mb-16">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-(--color-footer-heading) transition-colors duration-300">
           Our <span className="text-(--color-footer-accent)">Packages</span>
         </h1>
-        <p className="text-footer-secondary text-lg max-w-2xl mx-auto">
+        <div className="h-1 w-20 bg-(--color-primary) mx-auto mb-6 rounded-none"></div>
+        <p className="text-footer-secondary text-lg max-w-2xl mx-auto transition-colors duration-300">
           Choose the perfect plan for your next event. Custom requests are always welcome.
         </p>
-      </div>
+      </FadeIn>
 
+      {/* Package Categories */}
       <div className="space-y-24">
         {categoryOrder.map((cat) => {
           const packages = grouped[cat];
@@ -97,18 +140,25 @@ export default function PackagesPage() {
 
           return (
             <section key={cat} id={cat} className="scroll-mt-24">
-              <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) mb-3">
-                {label}
-              </h2>
+              <FadeIn delay={0}>
+                <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) mb-3 transition-colors duration-300">
+                  {label}
+                </h2>
+              </FadeIn>
+              
               {intro && (
-                <p className="text-footer-secondary whitespace-pre-line mb-8 max-w-3xl leading-relaxed">
-                  {intro}
-                </p>
+                <FadeIn delay={100}>
+                  <p className="text-footer-secondary whitespace-pre-line mb-8 max-w-3xl leading-relaxed transition-colors duration-300">
+                    {intro}
+                  </p>
+                </FadeIn>
               )}
 
               <div className="flex flex-col gap-8">
-                {packages.map((pkg) => (
-                  <PackageCard key={pkg.name} package={pkg} />
+                {packages.map((pkg, idx) => (
+                  <FadeIn key={pkg.name} delay={150 + (idx * 100)}>
+                    <PackageCard package={pkg} />
+                  </FadeIn>
                 ))}
               </div>
             </section>
@@ -116,35 +166,41 @@ export default function PackagesPage() {
         })}
       </div>
 
+      {/* Extra Services */}
       <section className="mt-24 border-t border-(--color-footer-border) pt-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) mb-3">
-          Extra Epic Services
-        </h2>
-        <p className="text-footer-secondary mb-8 max-w-2xl leading-relaxed">
-          Don't settle for mediocre events when you aim to exude excellence. Our
-          extra features are fairly priced to bring out the absolute best in your celebration.
-        </p>
+        <FadeIn delay={0}>
+          <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) mb-3 transition-colors duration-300">
+            Extra Epic Services
+          </h2>
+        </FadeIn>
+        
+        <FadeIn delay={100}>
+          <p className="text-footer-secondary mb-8 max-w-2xl leading-relaxed transition-colors duration-300">
+            Don't settle for mediocre events when you aim to exude excellence. Our
+            extra features are fairly priced to bring out the absolute best in your celebration.
+          </p>
+        </FadeIn>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {extraServices.map((service) => (
-            <div
-              key={service.label}
-              className="flex items-center justify-between bg-(--color-footer-bg) border border-(--color-footer-border) rounded-xl px-5 py-4 shadow-sm"
-            >
-              <span className="text-(--color-footer-heading) font-medium text-sm flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                {service.label}
-              </span>
-              <span className="text-(--color-footer-accent) font-semibold text-sm whitespace-nowrap ml-4">
-                {service.price}
-              </span>
-            </div>
+          {extraServices.map((service, index) => (
+            <FadeIn key={service.label} delay={(index % 3) * 100}>
+              <div className="flex items-center justify-between bg-(--color-footer-bg) border border-(--color-footer-border) rounded-none px-5 py-4 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <span className="text-(--color-footer-heading) font-medium text-sm flex items-center gap-2 transition-colors duration-300">
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                  {service.label}
+                </span>
+                <span className="text-(--color-footer-accent) font-semibold text-sm whitespace-nowrap ml-4 transition-colors duration-300">
+                  {service.price}
+                </span>
+              </div>
+            </FadeIn>
           ))}
         </div>
       </section>
 
-      <div className="mt-20 text-center border-t border-(--color-footer-border) pt-10">
-        <p className="text-footer-secondary text-base">
+      {/* Custom Quote Footer */}
+      <FadeIn delay={200} className="mt-20 text-center border-t border-(--color-footer-border) pt-10">
+        <p className="text-footer-secondary text-base transition-colors duration-300">
           Need something custom?{" "}
           <Link
             href="/contact"
@@ -154,7 +210,7 @@ export default function PackagesPage() {
           </Link>{" "}
           for a personalized quote.
         </p>
-      </div>
+      </FadeIn>
 
       <CategoryScrollButtons />
     </div>
