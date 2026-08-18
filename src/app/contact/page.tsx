@@ -68,7 +68,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Your Name"
-                    className="px-5 py-4 bg-bg-primary border border-(--color-search-dropdown-border) rounded-xl text-(--color-text-light) focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 placeholder-opacity-50"
+                    className="px-5 py-4  border border-(--color-search-dropdown-border) rounded-xl text-(--color-text-light) focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 placeholder-opacity-50"
                   />
                 </div>
 
@@ -85,7 +85,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="you@example.com"
-                    className="px-5 py-4 bg-bg-primary border border-(--color-search-dropdown-border) rounded-xl text-(--color-text-light) focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 placeholder-opacity-50"
+                    className="px-5 py-4  border border-(--color-search-dropdown-border) rounded-xl text-(--color-text-light) focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 placeholder-opacity-50"
                   />
                 </div>
 
@@ -102,7 +102,7 @@ export default function ContactPage() {
                     required
                     rows={5}
                     placeholder="Tell us about your event..."
-                    className="px-5 py-4 bg-bg-primary border border-(--color-search-dropdown-border) rounded-xl text-(--color-text-light) focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 resize-y min-h-37.5 placeholder-opacity-50"
+                    className="px-5 py-4  border border-(--color-search-dropdown-border) rounded-xl text-footer-secondary focus:outline-none focus:border-(--color-primary) focus:ring-1 focus:ring-(--color-primary) transition-all duration-300 resize-y min-h-37.5 placeholder-opacity-50"
                   />
                 </div>
 
@@ -125,7 +125,7 @@ export default function ContactPage() {
                 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-bg-primary border border-(--color-search-dropdown-border) flex items-center justify-center shrink-0 text-(--color-primary)">
+                    <div className="w-12 h-12 rounded-full  border border-(--color-search-dropdown-border) flex items-center justify-center shrink-0 text-(--color-primary)">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
@@ -139,7 +139,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-bg-primary border border-(--color-search-dropdown-border) flex items-center justify-center shrink-0 text-(--color-primary)">
+                    <div className="w-12 h-12 rounded-full border border-(--color-search-dropdown-border) flex items-center justify-center shrink-0 text-(--color-primary)">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />

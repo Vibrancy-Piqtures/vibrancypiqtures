@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Fancybox as NativeFancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import Link from 'next/link';
 
 type GalleryImage = {
   id: number;
@@ -111,33 +112,43 @@ export default function HomeGallery({ images }: { images: string[] }) {
   return (
     <section
       id="home"
-      className="py-10 px-5 bg-(--bg-primary) transition-colors duration-300"
+      className="py-5 px-5 bg-(--bg-primary) transition-colors duration-300"
     >
-      <div className="text-center mb-6">
-        <h2 className="text-3xl sm:text-4xl font-bold text-(--text-primary) mb-2">
-          Our Work
-        </h2>
-      </div>
-      <div
-        ref={galleryRef}
-        className="columns-1 min-[320px]:columns-2 min-[480px]:columns-3 md:columns-4 lg:columns-6 gap-3.75 md:gap-5"
-      >
-        {galleryImages.map((image, index) => (
-          <div
-            key={image.id}
-            className="grid-item-container break-inside-avoid mb-3.75 md:mb-5 relative transition-transform duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] opacity-0 animate-fade-in-up"
-            style={{ animationDelay: `${0.1 + (index % 12) * 0.05}s` }}
+      <div className="max-w-7xl mx-auto">
+        <div className="text-start mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-(--text-primary) mb-2">
+            Our Work
+          </h2>
+        </div>
+        <div
+          ref={galleryRef}
+          className="columns-1 min-[320px]:columns-2 min-[480px]:columns-3 md:columns-4 lg:columns-6 gap-3.75 md:gap-5"
+        >
+          {galleryImages.map((image, index) => (
+            <div
+              key={image.id}
+              className="grid-item-container break-inside-avoid mb-3.75 md:mb-5 relative transition-transform duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] opacity-0 animate-fade-in-up"
+              style={{ animationDelay: `${0.1 + (index % 12) * 0.05}s` }}
+            >
+              <a href={image.src} data-fancybox="gallery">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  className="w-full h-auto block rounded-lg shadow-[0_4px_10px_var(--gallery-shadow)] transition-all duration-400 hover:scale-[1.02] hover:z-10 relative"
+                />
+              </a>
+            </div>
+          ))}
+        </div>
+        <div className="text-end mt-8">
+          <Link
+            href="/gallery"
+              className="inline-block px-8 py-3 bg-(--color-footer-accent) text-white rounded-full font-medium hover:bg-footer-accent-hover transition-colors"
           >
-            <a href={image.src} data-fancybox="gallery">
-              <img
-                src={image.src}
-                alt={image.alt}
-                loading="lazy"
-                className="w-full h-auto block rounded-lg shadow-[0_4px_10px_var(--gallery-shadow)] transition-all duration-400 hover:scale-[1.02] hover:z-10 relative"
-              />
-            </a>
-          </div>
-        ))}
+            View More Work
+          </Link>
+        </div>
       </div>
     </section>
   );

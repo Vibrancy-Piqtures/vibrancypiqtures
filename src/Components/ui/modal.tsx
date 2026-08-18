@@ -57,8 +57,9 @@ export default function Modal({
       aria-modal="true"
       aria-label={title || 'Modal'}
     >
+      {/* Modal */}
       <div
-        className={`relative w-full max-w-120 bg-(--color-footer-bg) rounded-xl p-6 shadow-[0_12px_28px_rgba(0,0,0,0.28)] border border-(--color-footer-border) flex flex-col max-h-[calc(100vh-2rem)] ${className}`}
+        className={`relative w-full max-w-120 bg-(--color-footer-bg) rounded-xl p-6 shadow-[0_12px_28px_rgba(0,0,0,0.28)] border border-(--color-footer-border) flex flex-col max-h-[calc(100vh-2rem)] animate-zoom-in ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {showCloseButton && (
