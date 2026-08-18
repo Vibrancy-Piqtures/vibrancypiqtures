@@ -3,22 +3,22 @@
 import { useState, useEffect } from 'react';
 
 const clientReviews = [
-  {
-    id: 'arinda-kukyala',
-    clientName: "Arinda",
-    eventType: "Kukyala",
-    rating: 5,
-    review: "Absolutely stunning photos! You captured every special moment perfectly.",
-    date: "2024-06-15"
-  },
-  {
-    id: 'diana-joseph-kuhingira', 
-    clientName: "Diana",
-    eventType: "Kuhingira",
-    rating: 5,
-    review: "The photos are beyond our expectations. You made us feel so comfortable!",
-    date: "2023-08-22"
-  },
+    {
+      id: 'arinda-kukyaala',
+      clientName: "Arinda",
+      eventType: "Kukyaala",
+      rating: 5,
+      review: "Absolutely stunning photos! You captured every special moment perfectly.",
+      date: "2024-06-15"
+    },
+    {
+      id: 'diana-joseph-kuhingira', 
+      clientName: "Diana",
+      eventType: "Kuhingira",
+      rating: 5,
+      review: "The photos are beyond our expectations. You made us feel so comfortable!",
+      date: "2023-08-22"
+    },
     {
         id: 'sarah-mike-pre-wedding',
         clientName: "Mike",

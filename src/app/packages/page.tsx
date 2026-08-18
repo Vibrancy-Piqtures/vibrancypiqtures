@@ -48,7 +48,7 @@ const categoryDetails: Record<string, { label: string; intro: string }> = {
     label: "Proposal Packages",
     intro: "Capture the moment she says 'Yes' with our discreet, professional proposal photography and videography.",
   },
-  kukyala: {
+  kukyaala: {
     label: "Kukyaala Packages",
     intro: "Place your Kukyaala photography and videography in the hands of the best in Kampala.",
   },
@@ -80,7 +80,7 @@ const categoryDetails: Record<string, { label: string; intro: string }> = {
 
 const categoryOrder = [
   "proposal",
-  "kukyala",
+  "kukyaala",
   "kuhingira",
   "wedding",
   "portrait-indoor",

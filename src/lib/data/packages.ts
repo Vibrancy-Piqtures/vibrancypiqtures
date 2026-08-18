@@ -44,7 +44,7 @@ export const allPackages: PackageType[] = [
   //   category: "proposal",
   // },
 
-  // KUKYALA
+  // KUKYAALA
   {
     name: "Kukyaala Platinum",
     price: 2500000,
@@ -54,7 +54,7 @@ export const allPackages: PackageType[] = [
       "Everything in Gold Package",
       "250+ Photos in an A3 Luxury book",
       "3 Beautiful Boards (1A2, 2A3's)",
-      "Your Kukyala Day Vlog",
+      "Your Kukyaala Day Vlog",
       "Beautiful Short Video + Full Video",
     ],
     image: "/images/packages/Kukyaala/kukyaala-platinum.jpg",
