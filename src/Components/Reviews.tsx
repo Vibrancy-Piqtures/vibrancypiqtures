@@ -55,11 +55,11 @@ const clientReviews = [
 
 const StarRating = ({ rating }: { rating: number }) => {
   return (
-    <div className="flex items-center gap-0.5 text-[1.2rem] text-[var(--secondary-text)]">
+    <div className="flex items-center gap-0.5 text-[1.2rem] text-(--secondary-text)">
       {[...Array(5)].map((_, i) => (
         <span
           key={i}
-          className={i < rating ? 'text-yellow-400' : 'text-[var(--secondary-text)]'}
+          className={i < rating ? 'text-yellow-400' : 'text-(--secondary-text)'}
         >
           ★
         </span>
@@ -70,17 +70,17 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 const ReviewCard = ({ review }: { review: typeof clientReviews[0] }) => {
   return (
-    <div className="bg-[var(--card-bg)] p-6 rounded-lg max-w-[600px] mx-auto my-4">
+    <div className="bg-(--card-bg) p-6 rounded-lg max-w-150 mx-auto my-4">
       <div className="flex justify-between items-center mb-4">
-        <h4 className="text-[var(--text-color)] font-semibold text-lg">
+        <h4 className="text-(--text-color) font-semibold text-lg">
           {review.clientName}
         </h4>
         <StarRating rating={review.rating} />
       </div>
-      <p className="italic leading-relaxed text-[var(--text-color)]">
+      <p className="italic leading-relaxed text-(--text-color)">
         "{review.review}"
       </p>
-      <p className="text-right text-sm text-[var(--date-text)] mt-4">
+      <p className="text-right text-sm text-(--date-text) mt-4">
         {new Date(review.date).toLocaleDateString()}
       </p>
     </div>
@@ -103,7 +103,7 @@ const ReviewsSlider = ({ reviews }: { reviews: typeof clientReviews }) => {
   }, []);
 
   return (
-    <div className="relative max-w-[800px] mx-auto overflow-hidden min-h-[300px]">
+    <div className="relative max-w-200 mx-auto overflow-hidden min-h-75">
       {/* Slider content */}
       <div className="relative w-full h-full">
         {reviews.map((review, index) => (
@@ -122,14 +122,14 @@ const ReviewsSlider = ({ reviews }: { reviews: typeof clientReviews }) => {
       {/* Navigation arrows */}
       <button
         onClick={prevReview}
-        className="absolute top-1/2 -translate-y-1/2 left-0 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-transparent text-[var(--text-color)] text-3xl hover:text-[var(--accent-color)] hover:bg-black/10 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 left-0 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-transparent text-(--text-color) text-3xl hover:text-(--accent-color) hover:bg-black/10 transition-colors"
         aria-label="Previous review"
       >
         ‹
       </button>
       <button
         onClick={nextReview}
-        className="absolute top-1/2 -translate-y-1/2 right-0 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-transparent text-[var(--text-color)] text-3xl hover:text-[var(--accent-color)] hover:bg-black/10 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 right-0 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-transparent text-(--text-color) text-3xl hover:text-(--accent-color) hover:bg-black/10 transition-colors"
         aria-label="Next review"
       >
         ›
@@ -143,8 +143,8 @@ const ReviewsSlider = ({ reviews }: { reviews: typeof clientReviews }) => {
             onClick={() => setCurrentIndex(index)}
             className={`w-3 h-3 rounded-full border-none p-0 transition-all duration-300 ${
               index === currentIndex
-                ? 'bg-[var(--accent-color)] scale-110'
-                : 'bg-[var(--secondary-text)]'
+                ? 'bg-(--accent-color) scale-110'
+                : 'bg-(--secondary-text)'
             }`}
             aria-label={`Go to review ${index + 1}`}
           />
@@ -159,8 +159,8 @@ const AlbumReview = ({ albumId }: { albumId: string }) => {
   if (!review) return null;
 
   return (
-    <div className="max-w-[600px] mx-auto my-8 bg-[var(--card-bg)] p-6 rounded-lg">
-      <h3 className="text-[var(--text-color)] border-b border-[var(--border-color)] pb-2 mb-4 font-semibold">
+    <div className="max-w-150 mx-auto my-8 bg-(--card-bg) p-6 rounded-lg">
+      <h3 className="text-(--text-color) border-b border-(--border-color) pb-2 mb-4 font-semibold">
         Client Feedback
       </h3>
       <ReviewCard review={review} />
@@ -179,8 +179,8 @@ const Reviews = ({
   return (
     <div className="my-8 px-4">
       {showAll ? (
-        <div className="p-4 bg-[var(--card-bg)] rounded-lg">
-          <h2 className="text-center text-[var(--text-color)] text-2xl font-semibold mb-6">
+        <div className="p-4 bg-(--card-bg) rounded-lg">
+          <h2 className="text-center text-(--text-color) text-2xl font-semibold mb-6">
             Client Testimonials
           </h2>
           <ReviewsSlider reviews={clientReviews} />
