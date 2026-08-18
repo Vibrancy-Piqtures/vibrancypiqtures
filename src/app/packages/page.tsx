@@ -1,5 +1,5 @@
 import PackageCard from "@/Components/PackageCard";
-import { getAllPackages } from "@/lib/packages";
+import { getAllPackages } from "@/lib/data/packages";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import CategoryScrollButtons from "@/Components/CategoryScrollButtons";

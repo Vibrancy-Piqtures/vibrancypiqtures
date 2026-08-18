@@ -1,4 +1,4 @@
-import { getGalleryImages } from '@/lib/gallery';
+import { getGalleryImages } from '@/lib/helpers/gallery';
 import Hero from '@/Components/Hero';
 import HomeGallery from '@/Components/HomeGallery';
 import OurPackages from '@/Components/OurPackages';

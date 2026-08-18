@@ -1,4 +1,4 @@
-import { getGalleryCategories } from '@/lib/gallery-data';
+import { getGalleryCategories } from '@/lib/data/gallery-data';
 import GalleryClient from '@/Components/GalleryClient';
 
 export default async function GalleryPage() {

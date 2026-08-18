@@ -216,7 +216,7 @@ export const allPackages: PackageType[] = [
   {
     name: "Studio Session",
     price: 250000,
-    description: "Professional indoor portrait session in our Kampala studio.",
+    description: "Professional indoor portrait session in our studio.",
     features: [
       "1 hour session",
       "15 professionally edited photos",
@@ -232,7 +232,7 @@ export const allPackages: PackageType[] = [
     name: "Outdoor Session",
     price: 450000,
     description:
-      "Beautiful outdoor portraits at a location of your choice within Kampala.",
+      "Beautiful outdoor portraits at a location of your choice.",
     features: [
       "1.5 hour session",
       "25 edited photos",

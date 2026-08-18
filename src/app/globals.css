@@ -125,29 +125,30 @@
   --color-cta-bg: #114747;
   --color-cta-text: #ffffff;
 
-  /* Hero - LIGHT MODE */
-  --color-hero-bg: #fafafa;
-  --color-hero-overlay-start: rgba(255, 255, 255, 0.3);
-  --color-hero-overlay-mid: rgba(255, 255, 255, 0.2);
-  --color-hero-overlay-vertical-start: rgba(255, 255, 255, 0.0);
+  /* Hero - LIGHT MODE (Heavily refined for legibility & contrast) */
+  --color-hero-bg: #fdfdfd;
+  --color-hero-overlay-start: rgba(255, 255, 255, 0.95);
+  --color-hero-overlay-mid: rgba(255, 255, 255, 0.5);
+  --color-hero-overlay-vertical-start: rgba(255, 255, 255, 0.85);
   --color-hero-overlay-vertical-end: rgba(255, 255, 255, 0.0);
 
-  --color-hero-text: #0a3535;
-  --color-hero-subtext: #18181b;
-  --color-hero-muted: #3f3f46;
-  --color-hero-chip-bg: rgba(0, 0, 0, 0.1);
-  --color-hero-chip-border: rgba(0, 0, 0, 0.1);
-  --color-hero-chip-text: #3f3f46;
+  --color-hero-text: #094c4e;
+  --color-hero-subtext: #2f4444;
+  --color-hero-muted: #5a7a7a;
+  
+  --color-hero-chip-bg: rgba(255, 255, 255, 0.9);
+  --color-hero-chip-border: rgba(9, 76, 78, 0.15);
+  --color-hero-chip-text: #094c4e;
 
-  --color-hero-button-bg: #000000;
+  --color-hero-button-bg: #114747;
   --color-hero-button-text: #ffffff;
-  --color-hero-button-hover: #27272a;
+  --color-hero-button-hover: #0a3535;
 
-  --color-hero-thumb-ring: #0a3535;
-  --color-hero-thumb-text: #0a3535;
-  --color-hero-thumb-muted: #18181b;
-  --color-hero-thumb-overlay-start: rgba(255, 255, 255, 0.2);
-  --color-hero-thumb-overlay-mid: rgba(255, 255, 255, 0.1);
+  --color-hero-thumb-ring: #114747;
+  --color-hero-thumb-text: #094c4e;
+  --color-hero-thumb-muted: #475569;
+  --color-hero-thumb-overlay-start: rgba(255, 255, 255, 0.95);
+  --color-hero-thumb-overlay-mid: rgba(255, 255, 255, 0.4);
 }
 
 [data-theme="dark"] {
@@ -186,14 +187,15 @@
 
   /* Hero - DARK MODE */
   --color-hero-bg: #09090b;
-  --color-hero-overlay-start: rgba(0, 0, 0, 0.8);
+  --color-hero-overlay-start: rgba(0, 0, 0, 0.85);
   --color-hero-overlay-mid: rgba(0, 0, 0, 0.4);
-  --color-hero-overlay-vertical-start: rgba(0, 0, 0, 0.9);
-  --color-hero-overlay-vertical-end: rgba(0, 0, 0, 0.3);
+  --color-hero-overlay-vertical-start: rgba(0, 0, 0, 0.95);
+  --color-hero-overlay-vertical-end: rgba(0, 0, 0, 0.1);
 
   --color-hero-text: #ffffff;
   --color-hero-subtext: #d4d4d8;
   --color-hero-muted: #a1a1aa;
+  
   --color-hero-chip-bg: rgba(255, 255, 255, 0.1);
   --color-hero-chip-border: rgba(255, 255, 255, 0.1);
   --color-hero-chip-text: #a1a1aa;
@@ -205,8 +207,12 @@
   --color-hero-thumb-ring: #ffffff;
   --color-hero-thumb-text: #ffffff;
   --color-hero-thumb-muted: #d4d4d8;
-  --color-hero-thumb-overlay-start: rgba(0, 0, 0, 0.8);
+  --color-hero-thumb-overlay-start: rgba(0, 0, 0, 0.85);
   --color-hero-thumb-overlay-mid: rgba(0, 0, 0, 0.2);
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -238,10 +244,19 @@ body {
   to { opacity: 1; }
 }
 
-/* Zoom-in animation for modals */
 @keyframes zoomIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes zoomOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
 }
 
 .animate-fade-in-up {
@@ -250,11 +265,19 @@ body {
 .animate-slideDown {
   animation: slideDown 0.2s ease;
 }
+
 .animate-fadeIn {
   animation: fadeIn 0.3s ease;
 }
 .animate-zoom-in {
   animation: zoomIn 0.3s ease forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.2s ease forwards;
+}
+.animate-zoom-out {
+  animation: zoomOut 0.2s ease forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

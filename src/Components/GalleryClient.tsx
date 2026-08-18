@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import FancyboxMasonry from '@/Components/FancyboxMasonry';
-import { GalleryCategory } from '@/lib/gallery-data';
+import { GalleryCategory } from '@/lib/data/gallery-data';
 
 interface GalleryClientProps {
   categories: GalleryCategory[];

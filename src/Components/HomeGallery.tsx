@@ -58,38 +58,8 @@ export default function HomeGallery({ images }: { images: string[] }) {
       Images: { zoom: true },
     });
 
-    const calculateRowSpans = () => {
-      const gridItems = document.querySelectorAll('.grid-item-container');
-
-      gridItems.forEach((item) => {
-        const img = item.querySelector('img');
-        if (img && img.complete) {
-          const aspectRatio = img.naturalHeight / img.naturalWidth;
-          const rowSpan = Math.ceil(aspectRatio * 15);
-          (item as HTMLElement).style.gridRowEnd = `span ${rowSpan}`;
-        }
-      });
-    };
-
-    const imgElements = document.querySelectorAll('.grid-item-container img');
-    const handleLoad = () => calculateRowSpans();
-
-    imgElements.forEach((img) => {
-      const image = img as HTMLImageElement;
-
-      if (image.complete) {
-        calculateRowSpans();
-      } else {
-        img.addEventListener('load', handleLoad);
-      }
-    });
-
-    window.addEventListener('resize', calculateRowSpans);
-
     return () => {
       NativeFancybox.destroy();
-      window.removeEventListener('resize', calculateRowSpans);
-      imgElements.forEach((img) => img.removeEventListener('load', handleLoad));
     };
   }, [galleryImages]);
 
@@ -114,7 +84,7 @@ export default function HomeGallery({ images }: { images: string[] }) {
       id="home"
       className="py-5 px-5 bg-(--bg-primary) transition-colors duration-300"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-340 mx-auto">
         <div className="text-start mb-6">
           <h2 className="text-3xl sm:text-4xl font-bold text-(--text-primary) mb-2">
             Our Work
@@ -122,12 +92,12 @@ export default function HomeGallery({ images }: { images: string[] }) {
         </div>
         <div
           ref={galleryRef}
-          className="columns-1 min-[320px]:columns-2 min-[480px]:columns-3 md:columns-4 lg:columns-6 gap-3.75 md:gap-5"
+          className="columns-1 min-[320px]:columns-2 min-[480px]:columns-3 md:columns-4 lg:columns-5 gap-x-3.75 md:gap-x-5"
         >
           {galleryImages.map((image, index) => (
             <div
               key={image.id}
-              className="grid-item-container break-inside-avoid mb-3.75 md:mb-5 relative transition-transform duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] opacity-0 animate-fade-in-up"
+              className="break-inside-avoid mb-3.75 md:mb-5 relative transition-transform duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] opacity-0 animate-fade-in-up"
               style={{ animationDelay: `${0.1 + (index % 12) * 0.05}s` }}
             >
               <a href={image.src} data-fancybox="gallery">
@@ -144,7 +114,7 @@ export default function HomeGallery({ images }: { images: string[] }) {
         <div className="text-end mt-8">
           <Link
             href="/gallery"
-              className="inline-block px-8 py-3 bg-(--color-footer-accent) text-white rounded-full font-medium hover:bg-footer-accent-hover transition-colors"
+            className="inline-block px-8 py-3 bg-(--color-footer-accent) text-white rounded-full font-medium hover:bg-footer-accent-hover transition-colors"
           >
             View More Work
           </Link>

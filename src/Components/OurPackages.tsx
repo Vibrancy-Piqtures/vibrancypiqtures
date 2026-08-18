@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getFeaturedPackages } from '@/lib/packages';
+import { getFeaturedPackages } from '@/lib/data/packages';
 import PackageCard from '@/Components/PackageCard';
 
 export default function OurPackages() {
