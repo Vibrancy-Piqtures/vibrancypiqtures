@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 const WhatsAppButton = () => {
-  const phoneNumber = '256755311193';
+  const phoneNumber = '256767810246';
   const message = 'Hello! I came across your website...';
   const [visible, setVisible] = useState(false);
   const [imgError, setImgError] = useState(false);
