@@ -46,7 +46,10 @@ export default function Reveal({
           setIsVisible(false);
         }
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+      { 
+        threshold: 0.05, 
+        rootMargin: '150px 0px 150px 0px',
+      },
     );
 
     observer.observe(node);
