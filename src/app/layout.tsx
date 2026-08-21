@@ -6,7 +6,7 @@ import Providers from './providers';
 export const metadata: Metadata = {
   metadataBase: new URL('https://vibrancypiqtures.com'),
   title: 'Vibrancy Piqtures | Photography & Videography',
-  description: 'Best wedding photography and videography services in Kyanja, Capturing moments beautifully.',
+  description: 'Best photography and videography services in Kyanja, we capture all moments in their authentic aura.',
   openGraph: {
     title: 'Vibrancy Piqtures | Photography & Videography',
     description: 'Immortalizing Moments, Creating Art.',
