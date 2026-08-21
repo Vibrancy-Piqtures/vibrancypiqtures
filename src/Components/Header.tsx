@@ -142,13 +142,16 @@ export default function Header() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 w-full h-20 px-4 sm:px-6 lg:px-8 flex justify-between items-center shadow-md z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-header-bg/95 dark:bg-header-bg-dark/95 backdrop-blur-md'
-            : 'bg-header-bg dark:bg-header-bg-dark'
-        }`}
-      >
+      <header className="fixed top-0 left-0 w-full h-20 px-4 sm:px-6 lg:px-8 flex justify-between items-center shadow-md z-50">
+        {/* Isolated background layer for backdrop-blur */}
+        <div
+          className={`absolute inset-0 -z-10 transition-all duration-300 ${
+            isScrolled
+              ? 'bg-header-bg/95 dark:bg-header-bg-dark/95 backdrop-blur-md'
+              : 'bg-header-bg dark:bg-header-bg-dark'
+          }`}
+        />
+
         <h1>
           <Link href="/" className="flex items-center">
             <Image
@@ -233,7 +236,7 @@ export default function Header() {
           <ul
             ref={menuListRef}
             className={`list-none p-0 m-0 flex items-center gap-2 lg:gap-4 transition-all duration-300 ease-out
-              max-lg:fixed max-lg:top-0 max-lg:right-0 max-lg:h-full max-lg:w-80 max-sm:w-72 max-lg:flex-col max-lg:bg-mobile-menu-bg dark:max-lg:bg-mobile-menu-bg-dark max-lg:backdrop-blur max-lg:shadow-lg max-lg:rounded-l-lg max-lg:z-50 max-lg:overflow-y-auto
+              max-lg:fixed max-lg:top-0 max-lg:right-0 max-lg:h-screen max-lg:w-80 max-sm:w-72 max-lg:flex-col max-lg:bg-mobile-menu-bg dark:max-lg:bg-mobile-menu-bg-dark max-lg:backdrop-blur max-lg:shadow-lg max-lg:rounded-l-lg max-lg:z-50 max-lg:overflow-y-auto max-lg:pt-20
               ${isMenuOpen ? 'max-lg:translate-x-0' : 'max-lg:translate-x-full'}
             `}
           >
