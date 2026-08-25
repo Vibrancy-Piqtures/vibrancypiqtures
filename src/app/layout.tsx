@@ -5,14 +5,25 @@ import Providers from './providers';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://vibrancypiqtures.com'),
+
   title: 'Vibrancy Piqtures | Photography & Videography',
-  description: 'Best photography and videography services in Kyanja, we capture all moments in their authentic aura.',
+  description:
+    'Professional photography and videography services in Kyanja, Kampala. We capture authentic moments and turn them into lasting memories.',
+
   openGraph: {
     title: 'Vibrancy Piqtures | Photography & Videography',
-    description: 'Immortalizing Moments, Creating Art.',
+    description:
+      'Professional photography and videography services in Kyanja, Kampala. We capture authentic moments and turn them into lasting memories.',
     url: 'https://vibrancypiqtures.com',
     siteName: 'Vibrancy Piqtures',
-    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630 }],
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Vibrancy Piqtures photography and videography',
+      },
+    ],
     locale: 'en_US',
     type: 'website',
   },
