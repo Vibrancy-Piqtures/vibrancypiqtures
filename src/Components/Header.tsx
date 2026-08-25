@@ -38,10 +38,11 @@ export default function Header() {
 
   const buildSearchData = (): SearchResult[] => [
     { type: 'page', title: 'Home', path: '/', keywords: ['home', 'main'] },
-    { type: 'page', title: 'Gallery', path: '/gallery', keywords: ['gallery', 'photos', 'pictures', 'images'] },
-    { type: 'page', title: 'Videos', path: '/videos', keywords: ['videos', 'films', 'movies'] },
-    { type: 'page', title: 'About Us', path: '/about', keywords: ['about', 'team', 'info'] },
-    { type: 'page', title: 'Contact Us', path: '/contact', keywords: ['contact', 'reach', 'message'] },
+    { type: 'page', title: 'Gallery', path: '/gallery', keywords: ['gallery', 'photos', 'pictures', 'images', 'portfolio'] },
+    { type: 'page', title: 'Packages & Pricing', path: '/packages', keywords: ['packages', 'prices', 'pricing', 'rates', 'cost', 'photography packages'] },
+    { type: 'page', title: 'Videos', path: '/videos', keywords: ['videos', 'films', 'videography', 'movies'] },
+    { type: 'page', title: 'About Us', path: '/about', keywords: ['about', 'team', 'info', 'james peter swade'] },
+    { type: 'page', title: 'Contact Us', path: '/contact', keywords: ['contact', 'reach', 'message', 'book'] },
   ];
   const searchData = buildSearchData();
 
@@ -134,6 +135,7 @@ export default function Header() {
 
   const navLinks = [
     { name: 'Home', href: '/' },
+    { name: 'Packages', href: '/packages' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Videos', href: '/videos' },
     { name: 'About Us', href: '/about' },
@@ -169,7 +171,7 @@ export default function Header() {
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search albums, clients, events..."
+                placeholder="Search packages, gallery, services..."
                 value={searchQuery}
                 onChange={handleSearch}
                 onKeyDown={handleSearchKeyDown}
@@ -259,10 +261,9 @@ export default function Header() {
               );
             })}
 
-            {/* WhatsApp button in mobile menu */}
             <li className="hidden max-lg:block w-full px-2.5 py-2">
               <a
-                href="https://wa.me/0767810246"
+                href="https://wa.me/256767810246"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full px-3 py-3 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-colors"

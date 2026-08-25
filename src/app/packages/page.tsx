@@ -7,7 +7,6 @@ import { Check } from "lucide-react";
 import Link from "next/link";
 import CategoryScrollButtons from "@/Components/CategoryScrollButtons";
 
-// --- Intersection Observer Component for smooth, non-glitchy scroll animations ---
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -124,7 +123,7 @@ export default function PackagesPage() {
         </h1>
         <div className="h-1 w-20 bg-(--color-primary) mx-auto mb-6 rounded-none"></div>
         <p className="text-footer-secondary text-lg max-w-2xl mx-auto transition-colors duration-300">
-          Choose the perfect plan for your next event. Custom requests are always welcome.
+          Choose the perfect plan for your next event.
         </p>
       </FadeIn>
 
