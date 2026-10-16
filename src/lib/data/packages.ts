@@ -51,11 +51,14 @@ export const allPackages: PackageType[] = [
     description:
       "Planning a Slightly Bigger Kukyaala? Full Coverage of Event.",
     features: [
-      "Everything in Gold Package",
+      "2 Photographers",
+      "2 Videographers",
+      "Full Day Drone Services",
       "250+ Photos in an A3 Luxury book",
       "3 Beautiful Boards (1A2, 2A3's)",
       "Your Kukyaala Day Vlog",
       "Beautiful Short Video + Full Video",
+      "1 Year Files Back Up",
     ],
     image: "/images/packages/Kukyaala/kukyaala-platinum.jpg",
     category: "kukyaala",
@@ -66,11 +69,13 @@ export const allPackages: PackageType[] = [
     description:
       "This is our Most Popular Package. If Your Attention is on Both Photos & Video.",
     features: [
-      "Everything in Silver Package",
+      "1 Photographer",
+      "2 Videographers",
       "200+ Photos in a Photobook",
       "1 Videographer",
       "Beautiful Short Video",
       "6 Months Files Back up",
+      "Beautiful Social Media Reels",
     ],
     image: "/images/packages/Kukyaala/kukyaala-gold.jpg",
     category: "kukyaala",
@@ -100,6 +105,7 @@ export const allPackages: PackageType[] = [
     features: [
       "2 Photographers",
       "3 Videographers",
+      "Full Day Drone Services",
       "400+ Photos in Two Luxury Photobooks",
       "2 Luxury Couple Frame Photos",
       "In Door Mugole Display Tv",
@@ -108,6 +114,7 @@ export const allPackages: PackageType[] = [
       "Your Kwanjula Day Vlog",
       "External Drive With All Work",
       "Full Event Video (Two 64GB Drives)",
+      "1 Year Files Back Up",
     ],
     image: "/images/packages/Kwanjula/kwanjula-platinum.jpg",
     category: "kuhingira",
@@ -132,7 +139,7 @@ export const allPackages: PackageType[] = [
     category: "kuhingira",
     popular: true,
   },
-    {
+  {
     name: "Kwanjula Silver",
     price: 3200000,
     description:
@@ -157,8 +164,9 @@ export const allPackages: PackageType[] = [
     description:
       "Unlock the World with this Combo, this Package suits a big Wedding. Book Now!",
     features: [
-      "Everything in Gold Package",
+      "3 Photographers",
       "3 Videographers",
+      "Full Day Drone Services",
       "450+ Edited Photos",
       "2 Luxury Couple Frames",
       "Love Story & Memory Lane Videos",
@@ -168,6 +176,7 @@ export const allPackages: PackageType[] = [
       "External Drive With All Work",
       "Your Wedding Day Vlog (New)",
       "Private Online Photo Gallery",
+      "1 Year Files Back Up",
     ],
     image: "/images/packages/Wedding/wedding-platinum.jpg",
     category: "wedding",
@@ -292,3 +301,4 @@ export function getFeaturedPackages(): PackageType[] {
     )
     .slice(0, 3);
 }
+
