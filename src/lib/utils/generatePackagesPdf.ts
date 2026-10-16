@@ -68,12 +68,6 @@ function fitImage(natural: { w: number; h: number }, boxW: number, boxH: number)
   return { w: natural.w * ratio, h: natural.h * ratio };
 }
 
-/**
- * Generate the packages PDF.
- * @param category  Optional category key ("wedding", "kuhingira", etc.)
- *                  If omitted or "all", exports everything + extras.
- *                  In "all" mode, each category starts on a fresh page.
- */
 export async function generatePackagesPdf(category: string = "all") {
   const PAGE_W = 360;
   const PAGE_H = 640;
@@ -93,14 +87,15 @@ export async function generatePackagesPdf(category: string = "all") {
   const IMG_BOX_H = 160;
   const CARD_PADDING = 12;
   const CARD_GAP = 14;
+  const CAT_HEADER_H = 30;
+  const CAT_HEADER_GAP = 14;
 
   const isAll = category === "all";
   const headerTitle = isAll
     ? "Our Packages"
     : categoryLabels[category] || "Our Packages";
 
-  // ---------- HEADER (white background) ----------
-  // White background with a subtle bottom border line.
+  // ---------- HEADER (white) ----------
   doc.setFillColor(255, 255, 255);
   doc.rect(0, 0, pageWidth, 100, "F");
   doc.setDrawColor(225);
@@ -125,7 +120,7 @@ export async function generatePackagesPdf(category: string = "all") {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.setTextColor(20); // dark text on white
+  doc.setTextColor(20);
   const titleLines = doc.splitTextToSize(headerTitle, contentW);
   doc.text(titleLines, pageWidth / 2, titleY, { align: "center" });
 
@@ -163,40 +158,85 @@ export async function generatePackagesPdf(category: string = "all") {
     }
   };
 
-  const drawCategoryHeader = (label: string) => {
-    doc.setFillColor(230, 230, 230);
-    doc.rect(marginX, cursorY, contentW, 30, "F");
-    doc.setFillColor(17, 71, 71);
-    doc.rect(marginX, cursorY, 5, 30, "F");
+  // Pre-measure a package card height (font metrics only — no image fetch)
+  const measureCardHeight = (pkg: (typeof allPackages)[number]) => {
+    const innerW = contentW - CARD_PADDING * 2;
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.setTextColor(20);
-    const catLines = doc.splitTextToSize(label, contentW - 20);
-    doc.text(catLines, marginX + 14, cursorY + 20);
-    cursorY += 30 + 14;
+    doc.setFontSize(13);
+    const nameLines = doc.splitTextToSize(pkg.name, innerW);
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+    const descLines = doc.splitTextToSize(pkg.description, innerW);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    const featureLines = pkg.features.map((f) =>
+      doc.splitTextToSize(f, innerW - 14)
+    );
+    const featuresH = featureLines.reduce(
+      (sum, lines) => sum + lines.length * 13 + 2,
+      0
+    );
+
+    const nameH = nameLines.length * 16;
+    const descH = descLines.length * 13;
+    const priceH = 18;
+
+    return (
+      CARD_PADDING +
+      IMG_BOX_H +
+      12 +
+      nameH + 6 +
+      priceH + 8 +
+      descH + 10 +
+      featuresH +
+      CARD_PADDING
+    );
   };
 
-  // ---------- CATEGORIES ----------
   let isFirstCategory = true;
 
   for (const cat of categoriesToRender) {
     const packages = grouped[cat];
     if (!packages || packages.length === 0) continue;
 
-    // In "all" mode: every category starts on a fresh page (except the very first,
-    // which continues below the header). In single-category mode: continuous flow.
+    const label = categoryLabels[cat] || cat;
+
+    // Height needed for the category header + first card to fit together.
+    // If they can't fit on the current page, push the whole thing to a new page.
+    const firstCardH = measureCardHeight(packages[0]);
+    const headerWithFirstCard = CAT_HEADER_H + CAT_HEADER_GAP + firstCardH;
+
     if (isAll && !isFirstCategory) {
+      // Always start each category on a fresh page (except the first)
       doc.addPage([PAGE_W, PAGE_H], "portrait");
       cursorY = 40;
+    } else {
+      // First category (or single-category mode): if header + first card
+      // can't fit on what's left, move the whole thing to a fresh page.
+      if (cursorY + headerWithFirstCard > pageHeight - 40) {
+        doc.addPage([PAGE_W, PAGE_H], "portrait");
+        cursorY = 40;
+      }
     }
     isFirstCategory = false;
 
-    ensureSpace(50);
+    // Draw category header
+    doc.setFillColor(230, 230, 230);
+    doc.rect(marginX, cursorY, contentW, CAT_HEADER_H, "F");
+    doc.setFillColor(17, 71, 71);
+    doc.rect(marginX, cursorY, 5, CAT_HEADER_H, "F");
 
-    const label = categoryLabels[cat] || cat;
-    drawCategoryHeader(label);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(20);
+    const catLines = doc.splitTextToSize(label, contentW - 20);
+    doc.text(catLines, marginX + 14, cursorY + 20);
+    cursorY += CAT_HEADER_H + CAT_HEADER_GAP;
 
+    // Draw packages
     for (const pkg of packages) {
       const innerW = contentW - CARD_PADDING * 2;
 
@@ -292,7 +332,6 @@ export async function generatePackagesPdf(category: string = "all") {
 
   // ---------- EXTRA SERVICES (only in "all" mode) ----------
   if (isAll) {
-    // Start extras on a fresh page too
     doc.addPage([PAGE_W, PAGE_H], "portrait");
     cursorY = 40;
 
@@ -354,7 +393,6 @@ export async function generatePackagesPdf(category: string = "all") {
     doc.text(note, marginX, cursorY);
   }
 
-  // ---------- FILENAME ----------
   const slug = isAll
     ? "All"
     : (categoryLabels[category] || category)
