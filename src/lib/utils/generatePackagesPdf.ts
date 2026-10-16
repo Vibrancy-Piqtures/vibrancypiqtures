@@ -98,10 +98,8 @@ export async function generatePackagesPdf(category: string = "all") {
     ? "Our Packages"
     : categoryLabels[category] || "Our Packages";
 
-  // ---------- HEADER ----------
-  // "All" mode: show the big cover header ("Our Packages" + logo + subtitle).
-  // Single-category mode: skip the cover, so the category header starts at
-  // the very top and the first card flows naturally on page 1.
+  // HEADER
+
   let cursorY = BOTTOM_MARGIN;
 
   if (isAll) {
@@ -321,7 +319,7 @@ export async function generatePackagesPdf(category: string = "all") {
     cursorY += 6;
   }
 
-  // ---------- EXTRA SERVICES (only in "all" mode) ----------
+  // EXTRA SERVICES (only in "all" mode)
   if (isAll) {
     newPage();
 
