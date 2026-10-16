@@ -68,6 +68,8 @@ function fitImage(natural: { w: number; h: number }, boxW: number, boxH: number)
   return { w: natural.w * ratio, h: natural.h * ratio };
 }
 
+type Pkg = ReturnType<typeof getAllPackages>[number];
+
 export async function generatePackagesPdf(category: string = "all") {
   const PAGE_W = 360;
   const PAGE_H = 640;
@@ -89,6 +91,7 @@ export async function generatePackagesPdf(category: string = "all") {
   const CARD_GAP = 14;
   const CAT_HEADER_H = 30;
   const CAT_HEADER_GAP = 14;
+  const BOTTOM_MARGIN = 40;
 
   const isAll = category === "all";
   const headerTitle = isAll
@@ -137,29 +140,44 @@ export async function generatePackagesPdf(category: string = "all") {
   let cursorY = 120;
 
   const allPackages = getAllPackages();
-  const grouped = allPackages.reduce<Record<string, typeof allPackages>>(
-    (acc, pkg) => {
-      const cat = pkg.category || "uncategorised";
-      if (!acc[cat]) acc[cat] = [];
-      acc[cat].push(pkg);
-      return acc;
-    },
-    {}
-  );
+  const grouped = allPackages.reduce<Record<string, Pkg[]>>((acc, pkg) => {
+    const cat = pkg.category || "uncategorised";
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(pkg);
+    return acc;
+  }, {});
 
   const categoriesToRender = isAll
     ? categoryOrder
     : categoryOrder.filter((c) => c === category);
 
+  const newPage = () => {
+    doc.addPage([PAGE_W, PAGE_H], "portrait");
+    cursorY = BOTTOM_MARGIN;
+  };
+
   const ensureSpace = (needed: number) => {
-    if (cursorY + needed > pageHeight - 40) {
-      doc.addPage([PAGE_W, PAGE_H], "portrait");
-      cursorY = 40;
+    if (cursorY + needed > pageHeight - BOTTOM_MARGIN) {
+      newPage();
     }
   };
 
-  // Pre-measure a package card height (font metrics only — no image fetch)
-  const measureCardHeight = (pkg: (typeof allPackages)[number]) => {
+  /**
+   * PURE measurement: sets the font state it needs internally, computes
+   * every wrapped line, and returns the total card height. Never reads
+   * external state, so callers can call it any time.
+   */
+  const measureCard = (
+    pkg: Pkg
+  ): {
+    cardH: number;
+    nameLines: string[];
+    descLines: string[];
+    featureLines: string[][];
+    nameH: number;
+    descH: number;
+    featuresH: number;
+  } => {
     const innerW = contentW - CARD_PADDING * 2;
 
     doc.setFont("helvetica", "bold");
@@ -172,58 +190,35 @@ export async function generatePackagesPdf(category: string = "all") {
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    const featureLines = pkg.features.map((f) =>
+    const featureLines = pkg.features.map((f: string) =>
       doc.splitTextToSize(f, innerW - 14)
-    );
-    const featuresH = featureLines.reduce(
-      (sum, lines) => sum + lines.length * 13 + 2,
-      0
     );
 
     const nameH = nameLines.length * 16;
     const descH = descLines.length * 13;
+    const featuresH = featureLines.reduce(
+      (sum: number, lines: string[]) => sum + lines.length * 13 + 2,
+      0
+    );
     const priceH = 18;
 
-    return (
+    const cardH =
       CARD_PADDING +
       IMG_BOX_H +
       12 +
-      nameH + 6 +
-      priceH + 8 +
-      descH + 10 +
+      nameH +
+      6 +
+      priceH +
+      8 +
+      descH +
+      10 +
       featuresH +
-      CARD_PADDING
-    );
+      CARD_PADDING;
+
+    return { cardH, nameLines, descLines, featureLines, nameH, descH, featuresH };
   };
 
-  let isFirstCategory = true;
-
-  for (const cat of categoriesToRender) {
-    const packages = grouped[cat];
-    if (!packages || packages.length === 0) continue;
-
-    const label = categoryLabels[cat] || cat;
-
-    // Height needed for the category header + first card to fit together.
-    // If they can't fit on the current page, push the whole thing to a new page.
-    const firstCardH = measureCardHeight(packages[0]);
-    const headerWithFirstCard = CAT_HEADER_H + CAT_HEADER_GAP + firstCardH;
-
-    if (isAll && !isFirstCategory) {
-      // Always start each category on a fresh page (except the first)
-      doc.addPage([PAGE_W, PAGE_H], "portrait");
-      cursorY = 40;
-    } else {
-      // First category (or single-category mode): if header + first card
-      // can't fit on what's left, move the whole thing to a fresh page.
-      if (cursorY + headerWithFirstCard > pageHeight - 40) {
-        doc.addPage([PAGE_W, PAGE_H], "portrait");
-        cursorY = 40;
-      }
-    }
-    isFirstCategory = false;
-
-    // Draw category header
+  const drawCategoryHeader = (label: string) => {
     doc.setFillColor(230, 230, 230);
     doc.rect(marginX, cursorY, contentW, CAT_HEADER_H, "F");
     doc.setFillColor(17, 71, 71);
@@ -235,96 +230,99 @@ export async function generatePackagesPdf(category: string = "all") {
     const catLines = doc.splitTextToSize(label, contentW - 20);
     doc.text(catLines, marginX + 14, cursorY + 20);
     cursorY += CAT_HEADER_H + CAT_HEADER_GAP;
+  };
 
-    // Draw packages
-    for (const pkg of packages) {
-      const innerW = contentW - CARD_PADDING * 2;
+  const drawCard = async (pkg: Pkg) => {
+    const m = measureCard(pkg);
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      const nameLines = doc.splitTextToSize(pkg.name, innerW);
+    // ensure card fits before drawing
+    ensureSpace(m.cardH + CARD_GAP);
 
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(10);
-      const descLines = doc.splitTextToSize(pkg.description, innerW);
+    const cardTop = cursorY;
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      const featureLines = pkg.features.map((f) =>
-        doc.splitTextToSize(f, innerW - 14)
-      );
-      const featuresH = featureLines.reduce(
-        (sum, lines) => sum + lines.length * 13 + 2,
-        0
-      );
+    // background
+    doc.setFillColor(250, 250, 250);
+    doc.rect(marginX, cardTop, contentW, m.cardH, "F");
+    doc.setDrawColor(225);
+    doc.rect(marginX, cardTop, contentW, m.cardH);
 
-      const nameH = nameLines.length * 16;
-      const descH = descLines.length * 13;
-      const priceH = 18;
+    let y = cardTop + CARD_PADDING;
 
-      const cardH =
-        CARD_PADDING +
-        IMG_BOX_H +
-        12 +
-        nameH + 6 +
-        priceH + 8 +
-        descH + 10 +
-        featuresH +
-        CARD_PADDING;
+    // image
+    const imgData = pkg.image ? await loadImageAsDataUrl(pkg.image) : null;
+    if (imgData) {
+      const dims = await getImageDimensions(imgData);
+      const fitted = fitImage(dims, IMG_BOX_W, IMG_BOX_H);
+      const imgX = marginX + (contentW - fitted.w) / 2;
+      const imgY = y + (IMG_BOX_H - fitted.h) / 2;
+      doc.addImage(imgData, "JPEG", imgX, imgY, fitted.w, fitted.h);
+    }
+    y += IMG_BOX_H + 12;
 
-      ensureSpace(cardH + CARD_GAP);
+    // name
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(20);
+    doc.text(m.nameLines, marginX + CARD_PADDING, y + 12);
+    y += m.nameH + 6;
 
-      const cardTop = cursorY;
+    // price
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(17, 71, 71);
+    doc.text(
+      `USH ${pkg.price.toLocaleString()}`,
+      marginX + CARD_PADDING,
+      y + 12
+    );
+    y += 18 + 8;
 
-      doc.setFillColor(250, 250, 250);
-      doc.rect(marginX, cardTop, contentW, cardH, "F");
-      doc.setDrawColor(225);
-      doc.rect(marginX, cardTop, contentW, cardH);
+    // description
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+    doc.setTextColor(110);
+    doc.text(m.descLines, marginX + CARD_PADDING, y + 10);
+    y += m.descH + 10;
 
-      let y = cardTop + CARD_PADDING;
-      const imgData = pkg.image ? await loadImageAsDataUrl(pkg.image) : null;
-      if (imgData) {
-        const dims = await getImageDimensions(imgData);
-        const fitted = fitImage(dims, IMG_BOX_W, IMG_BOX_H);
-        const imgX = marginX + (contentW - fitted.w) / 2;
-        const imgY = y + (IMG_BOX_H - fitted.h) / 2;
-        doc.addImage(imgData, "JPEG", imgX, imgY, fitted.w, fitted.h);
-      }
-      y += IMG_BOX_H + 12;
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      doc.setTextColor(20);
-      doc.text(nameLines, marginX + CARD_PADDING, y + 12);
-      y += nameH + 6;
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
+    // features
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    for (let i = 0; i < pkg.features.length; i++) {
       doc.setTextColor(17, 71, 71);
-      doc.text(
-        `USH ${pkg.price.toLocaleString()}`,
-        marginX + CARD_PADDING,
-        y + 12
-      );
-      y += priceH + 8;
+      doc.text("•", marginX + CARD_PADDING, y + 10);
+      doc.setTextColor(60);
+      doc.text(m.featureLines[i], marginX + CARD_PADDING + 12, y + 10);
+      y += m.featureLines[i].length * 13 + 2;
+    }
 
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(10);
-      doc.setTextColor(110);
-      doc.text(descLines, marginX + CARD_PADDING, y + 10);
-      y += descH + 10;
+    cursorY = cardTop + m.cardH + CARD_GAP;
+  };
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      for (let i = 0; i < pkg.features.length; i++) {
-        doc.setTextColor(17, 71, 71);
-        doc.text("•", marginX + CARD_PADDING, y + 10);
-        doc.setTextColor(60);
-        doc.text(featureLines[i], marginX + CARD_PADDING + 12, y + 10);
-        y += featureLines[i].length * 13 + 2;
-      }
+  let isFirstCategory = true;
 
-      cursorY = cardTop + cardH + CARD_GAP;
+  for (const cat of categoriesToRender) {
+    const packages = grouped[cat];
+    if (!packages || packages.length === 0) continue;
+
+    const label = categoryLabels[cat] || cat;
+
+    // First card measured
+    const firstCardH = measureCard(packages[0]).cardH;
+    const headerBlockH = CAT_HEADER_H + CAT_HEADER_GAP + firstCardH;
+
+    if (isAll && !isFirstCategory) {
+      // Every category in "all" mode starts a fresh page
+      newPage();
+    } else {
+      // First category (or single-category): move whole block if it can't fit
+      ensureSpace(headerBlockH);
+    }
+    isFirstCategory = false;
+
+    drawCategoryHeader(label);
+
+    for (const pkg of packages) {
+      await drawCard(pkg);
     }
 
     cursorY += 6;
@@ -332,8 +330,7 @@ export async function generatePackagesPdf(category: string = "all") {
 
   // ---------- EXTRA SERVICES (only in "all" mode) ----------
   if (isAll) {
-    doc.addPage([PAGE_W, PAGE_H], "portrait");
-    cursorY = 40;
+    newPage();
 
     doc.setFillColor(230, 230, 230);
     doc.rect(marginX, cursorY, contentW, 30, "F");
@@ -379,8 +376,7 @@ export async function generatePackagesPdf(category: string = "all") {
     // @ts-ignore
     cursorY = (doc as any).lastAutoTable.finalY + 20;
     if (cursorY > pageHeight - 60) {
-      doc.addPage([PAGE_W, PAGE_H], "portrait");
-      cursorY = 40;
+      newPage();
     }
 
     doc.setFont("helvetica", "italic");
