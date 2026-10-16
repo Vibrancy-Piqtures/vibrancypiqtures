@@ -98,46 +98,53 @@ export async function generatePackagesPdf(category: string = "all") {
     ? "Our Packages"
     : categoryLabels[category] || "Our Packages";
 
-  // ---------- HEADER (white) ----------
-  doc.setFillColor(255, 255, 255);
-  doc.rect(0, 0, pageWidth, 100, "F");
-  doc.setDrawColor(225);
-  doc.setLineWidth(0.5);
-  doc.line(0, 100, pageWidth, 100);
+  // ---------- HEADER ----------
+  // "All" mode: show the big cover header ("Our Packages" + logo + subtitle).
+  // Single-category mode: skip the cover, so the category header starts at
+  // the very top and the first card flows naturally on page 1.
+  let cursorY = BOTTOM_MARGIN;
 
-  const logoData = await loadImageAsDataUrl(LOGO_PATH);
-  let titleY = 40;
-  if (logoData) {
-    const dims = await getImageDimensions(logoData);
-    const logoBox = fitImage(dims, 110, 44);
-    doc.addImage(
-      logoData,
-      "PNG",
-      pageWidth / 2 - logoBox.w / 2,
-      10,
-      logoBox.w,
-      logoBox.h
+  if (isAll) {
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, pageWidth, 100, "F");
+    doc.setDrawColor(225);
+    doc.setLineWidth(0.5);
+    doc.line(0, 100, pageWidth, 100);
+
+    const logoData = await loadImageAsDataUrl(LOGO_PATH);
+    let titleY = 40;
+    if (logoData) {
+      const dims = await getImageDimensions(logoData);
+      const logoBox = fitImage(dims, 110, 44);
+      doc.addImage(
+        logoData,
+        "PNG",
+        pageWidth / 2 - logoBox.w / 2,
+        10,
+        logoBox.w,
+        logoBox.h
+      );
+      titleY = 74;
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(20);
+    const titleLines = doc.splitTextToSize(headerTitle, contentW);
+    doc.text(titleLines, pageWidth / 2, titleY, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(110);
+    doc.text(
+      "Choose the perfect plan for your next event.",
+      pageWidth / 2,
+      titleY + 16,
+      { align: "center" }
     );
-    titleY = 74;
+
+    cursorY = 120;
   }
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.setTextColor(20);
-  const titleLines = doc.splitTextToSize(headerTitle, contentW);
-  doc.text(titleLines, pageWidth / 2, titleY, { align: "center" });
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.setTextColor(110);
-  doc.text(
-    "Choose the perfect plan for your next event.",
-    pageWidth / 2,
-    titleY + 16,
-    { align: "center" }
-  );
-
-  let cursorY = 120;
 
   const allPackages = getAllPackages();
   const grouped = allPackages.reduce<Record<string, Pkg[]>>((acc, pkg) => {
@@ -162,11 +169,6 @@ export async function generatePackagesPdf(category: string = "all") {
     }
   };
 
-  /**
-   * PURE measurement: sets the font state it needs internally, computes
-   * every wrapped line, and returns the total card height. Never reads
-   * external state, so callers can call it any time.
-   */
   const measureCard = (
     pkg: Pkg
   ): {
@@ -176,7 +178,6 @@ export async function generatePackagesPdf(category: string = "all") {
     featureLines: string[][];
     nameH: number;
     descH: number;
-    featuresH: number;
   } => {
     const innerW = contentW - CARD_PADDING * 2;
 
@@ -215,7 +216,7 @@ export async function generatePackagesPdf(category: string = "all") {
       featuresH +
       CARD_PADDING;
 
-    return { cardH, nameLines, descLines, featureLines, nameH, descH, featuresH };
+    return { cardH, nameLines, descLines, featureLines, nameH, descH };
   };
 
   const drawCategoryHeader = (label: string) => {
@@ -234,13 +235,10 @@ export async function generatePackagesPdf(category: string = "all") {
 
   const drawCard = async (pkg: Pkg) => {
     const m = measureCard(pkg);
-
-    // ensure card fits before drawing
     ensureSpace(m.cardH + CARD_GAP);
 
     const cardTop = cursorY;
 
-    // background
     doc.setFillColor(250, 250, 250);
     doc.rect(marginX, cardTop, contentW, m.cardH, "F");
     doc.setDrawColor(225);
@@ -248,7 +246,6 @@ export async function generatePackagesPdf(category: string = "all") {
 
     let y = cardTop + CARD_PADDING;
 
-    // image
     const imgData = pkg.image ? await loadImageAsDataUrl(pkg.image) : null;
     if (imgData) {
       const dims = await getImageDimensions(imgData);
@@ -259,14 +256,12 @@ export async function generatePackagesPdf(category: string = "all") {
     }
     y += IMG_BOX_H + 12;
 
-    // name
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(20);
     doc.text(m.nameLines, marginX + CARD_PADDING, y + 12);
     y += m.nameH + 6;
 
-    // price
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.setTextColor(17, 71, 71);
@@ -277,14 +272,12 @@ export async function generatePackagesPdf(category: string = "all") {
     );
     y += 18 + 8;
 
-    // description
     doc.setFont("helvetica", "italic");
     doc.setFontSize(10);
     doc.setTextColor(110);
     doc.text(m.descLines, marginX + CARD_PADDING, y + 10);
     y += m.descH + 10;
 
-    // features
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     for (let i = 0; i < pkg.features.length; i++) {
@@ -306,15 +299,15 @@ export async function generatePackagesPdf(category: string = "all") {
 
     const label = categoryLabels[cat] || cat;
 
-    // First card measured
     const firstCardH = measureCard(packages[0]).cardH;
     const headerBlockH = CAT_HEADER_H + CAT_HEADER_GAP + firstCardH;
 
     if (isAll && !isFirstCategory) {
-      // Every category in "all" mode starts a fresh page
+      // Every category in "all" mode starts on a fresh page.
       newPage();
     } else {
-      // First category (or single-category): move whole block if it can't fit
+      // First category, or single-category: only move to a new page if the
+      // header + first card can't fit at all (very rare with 640pt pages).
       ensureSpace(headerBlockH);
     }
     isFirstCategory = false;
