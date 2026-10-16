@@ -303,4 +303,3 @@ export function getFeaturedPackages(): PackageType[] {
     )
     .slice(0, 3);
 }
-
