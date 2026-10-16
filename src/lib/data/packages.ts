@@ -88,6 +88,7 @@ export const allPackages: PackageType[] = [
       "This is our standard Photography Only Package. If Your Attention is on Photos only.",
     features: [
       "1 Photographer",
+      "1 Videographer",
       "150+ Photos in a Photobook",
       "2 Photo Boards (1A2, 1A3)",
       "4 Months BackUp",
@@ -187,7 +188,8 @@ export const allPackages: PackageType[] = [
     description:
       "You get extra services with this Combo, This Happens to be the Most Popular.",
     features: [
-      "2 Main Photographers",
+      "2 Main Photographers & An assistant",
+      "3 Videographers",
       "Pre Wedding Photoshoot (Within CBD)",
       "300+ Photos in a Luxury Bridal book",
       "4 Photo Boards (2A2's ,2A3's)",
@@ -208,7 +210,7 @@ export const allPackages: PackageType[] = [
     description:
       "This is our standard combo, Get extra Special Attention When you Book with us.",
     features: [
-      "1 Main photographer & An assistant",
+      "2 Main photographer & An assistant",
       "2 Videographers",
       "250+ Photos in a Bridal Photobook",
       "3 Photo Boards (1A2, 2A3's)",

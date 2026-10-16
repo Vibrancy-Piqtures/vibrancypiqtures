@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import PackageCard from "@/Components/PackageCard";
 import { getAllPackages } from "@/lib/data/packages";
-import { Check } from "lucide-react";
+import { Check, Download } from "lucide-react";
 import Link from "next/link";
 import CategoryScrollButtons from "@/Components/CategoryScrollButtons";
+import { generatePackagesPdf } from "@/lib/utils/generatePackagesPdf";
 
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -102,6 +103,8 @@ const extraServices = [
 
 export default function PackagesPage() {
   const allPackages = getAllPackages();
+  const [downloadingAll, setDownloadingAll] = useState(false);
+  const [downloadingCat, setDownloadingCat] = useState<string | null>(null);
 
   const grouped = allPackages.reduce<Record<string, typeof allPackages>>(
     (acc, pkg) => {
@@ -113,9 +116,27 @@ export default function PackagesPage() {
     {}
   );
 
+  const handleDownloadAll = async () => {
+    setDownloadingAll(true);
+    try {
+      await generatePackagesPdf("all");
+    } finally {
+      setTimeout(() => setDownloadingAll(false), 600);
+    }
+  };
+
+  const handleDownloadCategory = async (category: string) => {
+    setDownloadingCat(category);
+    try {
+      await generatePackagesPdf(category);
+    } finally {
+      setTimeout(() => setDownloadingCat(null), 600);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 md:pb-20">
-      
+
       {/* Header Section */}
       <FadeIn className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-(--color-footer-heading) transition-colors duration-300">
@@ -125,6 +146,17 @@ export default function PackagesPage() {
         <p className="text-footer-secondary text-lg max-w-2xl mx-auto transition-colors duration-300">
           Choose the perfect plan for your next event.
         </p>
+
+        {/* Download ALL Packages Button (unchanged) */}
+        <button
+          onClick={handleDownloadAll}
+          disabled={downloadingAll}
+          className="mt-8 inline-flex items-center gap-2 rounded-none bg-(--color-primary) px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-(--color-footer-accent) hover:-translate-y-0.5 hover:shadow-md disabled:opacity-60 disabled:cursor-wait"
+          aria-label="Download all packages as PDF"
+        >
+          <Download className="w-4 h-4" />
+          {downloadingAll ? "Preparing PDF..." : "Download Packages (PDF)"}
+        </button>
       </FadeIn>
 
       {/* Package Categories */}
@@ -138,14 +170,27 @@ export default function PackagesPage() {
             intro: "",
           };
 
+          const isDownloadingThis = downloadingCat === cat;
+
           return (
             <section key={cat} id={cat} className="scroll-mt-24">
               <FadeIn delay={0}>
-                <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) mb-3 transition-colors duration-300">
-                  {label}
-                </h2>
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <h2 className="text-3xl md:text-4xl font-bold text-(--color-footer-heading) transition-colors duration-300">
+                    {label}
+                  </h2>
+                  <button
+                    onClick={() => handleDownloadCategory(cat)}
+                    disabled={isDownloadingThis}
+                    title={`Download ${label} as PDF`}
+                    aria-label={`Download ${label} as PDF`}
+                    className="shrink-0 mt-1 inline-flex items-center justify-center w-9 h-9 rounded-none border border-(--color-footer-border) text-(--color-footer-accent) bg-transparent transition-all duration-300 hover:bg-(--color-footer-accent) hover:text-white hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-wait"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
               </FadeIn>
-              
+
               {intro && (
                 <FadeIn delay={100}>
                   <p className="text-footer-secondary whitespace-pre-line mb-8 max-w-3xl leading-relaxed transition-colors duration-300">
@@ -173,7 +218,7 @@ export default function PackagesPage() {
             Extra Epic Services
           </h2>
         </FadeIn>
-        
+
         <FadeIn delay={100}>
           <p className="text-footer-secondary mb-8 max-w-2xl leading-relaxed transition-colors duration-300">
             Don't settle for mediocre events when you aim to exude excellence. Our
