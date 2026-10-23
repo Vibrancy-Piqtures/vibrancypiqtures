@@ -7,7 +7,6 @@ import Reveal from '@/Components/Reveal';
 export default async function HomePage() {
   const allImages = await getGalleryImages();
   const homeGalleryImages = allImages.slice(0, 15);
-
   return (
     <>
       <Hero />
